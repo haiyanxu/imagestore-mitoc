@@ -1,3 +1,7 @@
+Imagestore-MITOC: Fork of hovel/imagestore for use with the MITOC photo gallery
+==========
+
+
 ImageStore
 ==========
 
@@ -25,4 +29,3 @@ Gallery for your site users
     * make albums non-public
     * set name, descripion and tags for photos
     * edit infomation about photo or upload new veresion
-
