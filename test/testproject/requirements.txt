@@ -3,6 +3,6 @@ sorl-thumbnail>=12.4.0
 django-autocomplete-light>=3.0
 django-tagging
 swapper
-cchardet>=2.1.4
+chardet
 lxml
 django-cms==3.6.0

@@ -15,7 +15,7 @@ setup(
         'django-autocomplete-light',
         'django-tagging',
         'swapper',
-        'cchardet>=2.1.4',
+        'chardet',
     ],
     author='Pavel Zhukov',
     author_email='gelios@gmail.com',
