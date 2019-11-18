@@ -1,0 +1,19 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+sorl-thumbnail = ">=12.4.0"
+django-autocomplete-light = ">=3.0"
+django-tagging = "*"
+swapper = "*"
+lxml = "*"
+django-cms = "==3.6.0"
+Pillow = ">=5.4.1"
+chardet = "*"
+
+[requires]
+python_version = "3.8"
