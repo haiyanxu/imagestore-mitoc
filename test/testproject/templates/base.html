@@ -1,87 +1,258 @@
-{% load staticfiles %}
-<!DOCTYPE html>
-<html>
-<head>
-    <meta http-equiv="content-type" content="application/html; charset=utf-8">
-    <link rel="stylesheet" href="{% static 'style.less' %}" type='text/less'>
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/smoothness/jquery-ui.css" type="text/css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/i18n/jquery-ui-i18n.min.js"></script>
-    <script src="https://yandex.st/json2/2011-01-18/json2.min.js"></script>
-    <script src="{% static 'csrf.js' %}"></script>
-    {{ form.media.css }}
-    <title>{% block title %}{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <!-- Scrollbar Custom CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 
-    {% block head %}{% endblock %}
-</head>
-<body>
+    {% load i18n %}
+    {% load static %}
+    {% load imagestore_tags %}
+    {% load mptt_tags %}
 
-<div class="topbar">
-    <div class="fill">
-        <div class="container">
-            <a class="brand" href="/">Django gallery solution</a>
-            <ul class="nav">
-                {% if request.user.is_authenticated %}
-                    <li>
-                        <a href="{% url 'admin:logout' %}">Logout</a>
-                    </li>
-                    {% if request.user.is_superuser %}
-                        <li>
-                            <a href="{% url 'admin:index' %}">Admin interface</a>
-                        </li>
-                    {% endif %}
-                {% endif %}
-                <li><a href="https://github.com/hovel/imagestore">Code</a></li>
-                <li><a href="https://pypi.python.org/pypi/imagestore">Download</a></li>
-                <li><a href="https://readthedocs.org/docs/imagestore/en/latest/">Documentation</a></li>
+    <!-- jQuery 1.7.2+ or Zepto.js 1.0+ -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
+
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <!-- Popper.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    <!-- jQuery Custom Scroller CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
+    <!-- Magnific Popup core CSS file -->
+    <link rel="stylesheet" type="text/css" href="{%  static  'magnific-popup/magnific-popup.css' %}">
+
+
+
+    <!-- Magnific Popup core JS file -->
+    <script type="text/javascript" src="{% static 'magnific-popup/jquery.magnific-popup.js' %}"></script>
+
+    <title>{% block title %}MITOC Photo Gallery{% endblock title %}</title>
+    {% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{%  static  'css/imagestore.css' %}">
+    {% endblock %}
+
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+          <a class="navbar-brand" href="{% url 'home' %}">MITOC Photo Gallery</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item active">
+                <a class="nav-link" href="{% url 'imagestore:index' %}">Gallery<span class="sr-only">(current)</span></a>
+              </li>
+              {% if imagestore_perms.add_album or request.user.is_superuser %}
+              <li class="nav-item active">
+                <a class="nav-link" href="{% url 'imagestore:create-album' %}">New Album<span class="sr-only">(current)</span></a>
+              </li> {% endif %}
+              {% if imagestore_perms.add_image or request.user.is_superuser %}
+              <li class="nav-item active">
+                <a class="nav-link" href="{% url 'imagestore:upload' %}">Upload Image<span class="sr-only">(current)</span></a>
+              </li> {% endif %}
+              {% if user.is_authenticated %}
+                <li class="nav-item active">
+                  <a class="nav-link" href="{% url 'account_logout' %}">Logout<span class="sr-only">(current)</span></a></li>
+              {% else %}
+                <li class="nav-item active">
+                  <a class="nav-link" href="{% url 'account_signup' %}">Signup<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link" href="{% url 'account_login' %}">Login<span class="sr-only">(current)</span></a>
+                </li>
+              {% endif %}
             </ul>
+          </div>
         </div>
-    </div>
-</div>
+      </nav>
 
-<div class="container-fluid">
-    <div class="sidebar">
-        {% block content-related %}
+    <div class="wrapper">
 
-        {% endblock %}
-    </div>
-    <!-- Main hero unit for a primary marketing message or call to action -->
-    <div class="content">
-        <div class="main-block">
+      <!-- The sidebar -->
+      <nav id="sidebar">
+          <div id="dismiss">
+              <i class="fas fa-angle-double-left"></i>
+          </div>
+          <div class="sidebar-header">
+              <h3>Albums</h3>
+          </div>
+
+          <ul class="list-unstyled components" id="accordion">
+              {% get_root_albums as albumroot %}
+              <!-- <p>Dummy Heading</p> -->
+              {% for album in albumroot %}
+              <li>
+                  <a href="{{ album.get_absolute_url }}">{{ album.name }}</a>
+                  {% if not album.is_leaf_node %}
+                      <a href="#{{ album.pk }}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-angle-down"></i></a>
+                      <ul class="collapse list-unstyled" id="{{ album.pk }}">
+                      </ul>
+                  {% endif %}
+              </li>
+              {% endfor %}
+          </ul>
+      </nav>
+
+        <!-- Open Sidebar Button -->
+        <button type="button" id="open-sidebar" class="btn btn-primary btn-sm">
+          <i class="fas fa-angle-double-right"></i>
+        </button>
+
+        <div id="content" class="content">
+
+            {% block breadcrumb %}
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <!-- {% if request.path != '/' %}
+                        <li class="breadcrumb-item"><a href="/">{% trans "Home" %}</a></li>
+                    {% endif %}
+                    {% if request.path == '/' %}
+                        <li class="breadcrumb-item"><a href="/">{% trans "Home" %}</a></li>
+                    {% endif %} -->
+                    <li class="breadcrumb-item"><a href="/">{% trans "Home" %}</a></li>
+                    {% if request.path != imagestore_index_url %}
+                        <li class="breadcrumb-item"><a href="{{ imagestore_index_url }}">{% trans "Gallery" %}</a></li>
+                    {% endif %}
+                    {% block imagestore-breadcrumb %}
+                    {% endblock %}
+                </ol>
+              </nav>
+            {% endblock %}
+
             {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-            {% if request.path != '/' %}
-                <div id="breadcrumb">
-                    {% block breadcrumb %}
-                        <a href="/">Main</a>
-                    {% endblock breadcrumb %}
-                </div>
-            {% endif %}
-            {% if request.path == '/' %}
-                <div class='forum-headline'>
-                    This is a default installation of PyBBModified with default theme from example.
-                </div>
+            <div>
+              <strong>Messages:</strong>
+              <ul>
+                {% for message in messages %}
+                <li>{{message}}</li>
+                {% endfor %}
+              </ul>
+            </div>
             {% endif %}
 
             {% block content %}
-            {% endblock content %}
-            <script type="text/javascript" src="//yandex.st/share/share.js" charset="utf-8"></script>
-            <div class="yashare-auto-init" data-yashareL10n="ru" data-yashareType="button" data-yashareQuickServices="yaru,vkontakte,facebook,twitter,odnoklassniki,moimir,lj,friendfeed,moikrug"></div>
+            <!-- <h1>Example project</h1> -->
+            {% endblock %}
 
-        </div>
-    </div>
-    {% if request.path == '/' %}
-    {% endif %}
+            {% block content-related %}
+                    {% block imagestore-info %}
+                    {% endblock %}
+                    <div id="controls">
+                        <ul>
+                            <!-- {% if imagestore_perms.add_image or request.user.is_superuser %}
+                                <li><a href={% url 'imagestore:upload' %}>{% trans "Upload image" %}</a></li>
+                            {% endif %}
+                            {% if imagestore_perms.add_album or request.user.is_superuser %}
+                                <li><a href={% url 'imagestore:create-album' %}>{% trans "Create new album" %}</a></li>
+                            {% endif %} -->
+                            {% block controls %}
+                            {% endblock controls %}
+                        </ul>
+                    </div>
+                    {% block imagestore-related %}
+                    {% endblock %}
+            {% endblock %}
 
-</div> <!-- /container -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js"></script>
-{{ form.media.js }}
-</body>
+          </div>
+          <!-- Dark Overlay element -->
+          <div class="overlay"></div>
+      </div>
+
+      <script>
+      $(document).ready(function(){
+            $('#accordion').on('show.bs.collapse', function (e) {
+              // alert('Event fired on album ' + e.target.id);
+              var parent_album_id = e.target.id;
+              console.log("parent album id is: " + parent_album_id);
+              $.get('/gallery/sidebarsubalbums/', {get_parent_album: parent_album_id}, function(data){
+                   $('#'+parent_album_id).html(data);
+                   // console.log("finished getting html:" + data);
+              });
+          });
+      });
+      </script>
+
+      <script>
+          $(document).ready(function () {
+              $("#sidebar").mCustomScrollbar({
+                  theme: "minimal-dark"
+              });
+
+              $('#dismiss, .overlay').on('click', function () {
+                  // hide sidebar
+                  $('#sidebar').removeClass('active');
+                  // hide overlay
+                  $('.overlay').removeClass('active');
+              });
+
+              $('#open-sidebar').on('click', function () {
+                  // open sidebar
+                  $('#sidebar').addClass('active');
+                  // fade in the overlay
+                  $('.overlay').addClass('active');
+                  $('.collapse.in').toggleClass('in');
+                  $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+              });
+          });
+      </script>
+
+      <script>
+      $(document).ready(function() {
+        var imageId = 0;
+        $('.thumb').magnificPopup({
+          type:'image',
+          callbacks: {
+            markupParse: function(template, values, item) {
+              // Triggers each time when content of popup changes
+              // console.log('Parsing:', template, values, item);
+              imageId = item.el.attr('id');
+            },
+          },
+          gallery: {
+            enabled: true
+          },
+          image: {
+            // tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
+            titleSrc: function(item) {
+              return item.el.attr('title') + '<small>' + 'Uploaded by: ' + item.el.attr('user') + '</small>' + '<small>' + item.el.attr('summary') + '</small>';
+            },
+            markup: '<div class="mfp-figure">'+
+            '<button title="options" type="button" id="openImageOptions" class="options"><i class="fas fa-ellipsis-h"></i></button>'+
+            '<div class="mfp-close"></div>'+
+            '<div class="mfp-img"></div>'+
+            '<div class="mfp-bottom-bar" style="text-align:center;">'+
+            '<div class="mfp-title"></div>'+
+            '<div class="mfp-counter"></div>'+
+            '</div>'+
+            '</div>',
+          }
+        });
+        var magnificPopup = $.magnificPopup.instance;
+        //
+        $(document).on('click', '#openImageOptions', function () {
+          $('#originalLink').attr("href", "{% url 'imagestore:image' 1234 %}".replace(/1234/, imageId.toString()));
+          $('#editLink').attr("href", "{% url 'imagestore:update-image' 1234 %}".replace(/1234/, imageId.toString()));
+          $('#deleteLink').attr("href", "{% url 'imagestore:delete-image' 1234 %}".replace(/1234/, imageId.toString()));
+          $('#imageOptions').modal('toggle');
+          // console.log("opening"+imageId);
+        });
+      });
+      </script>
+
+  </body>
 </html>
