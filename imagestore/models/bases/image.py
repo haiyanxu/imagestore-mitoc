@@ -27,8 +27,6 @@ UPLOAD_TO = getattr(settings, 'IMAGESTORE_UPLOAD_TO', 'imagestore/')
 class BaseImage(models.Model):
     title = models.CharField(verbose_name=_('Title'), max_length=255,
                              blank=True, null=True)
-    description = models.TextField(verbose_name=_('Description'),
-                                   blank=True, null=True)
     tags = TagField(verbose_name=_('Tags'), blank=True)
     order = models.IntegerField(verbose_name=_('Order'), default=0)
     image = ImageField(verbose_name=_('File'), max_length=255,
@@ -44,7 +42,7 @@ class BaseImage(models.Model):
                               on_delete=models.CASCADE, verbose_name=_('Album'),
                               blank=True, null=True, related_name='images')
     summary = models.TextField(verbose_name=_('Summary'),
-                                   blank=True, null=True)			 
+                                   blank=True, null=True)
 
     class Meta:
         abstract = True
