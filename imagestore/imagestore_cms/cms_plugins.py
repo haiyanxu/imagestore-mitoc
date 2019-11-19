@@ -14,7 +14,7 @@ class AlbumPlugin(CMSPluginBase):
     render_template = "cms/plugins/imagestore_album.html"
     text_enabled = True
 
-    def render(self, context, instance, placeholder):
+    def render(self, context, instance, placeholder, renderer=None):
         context.update({'album': instance.album})
         return context
 
@@ -25,7 +25,7 @@ class AlbumCarouselPlugin(CMSPluginBase):
     render_template = "cms/plugins/imagestore_album_carousel.html"
     text_enabled = True
 
-    def render(self, context, instance, placeholder):
+    def render(self, context, instance, placeholder, renderer=None):
 
         # default carousel template in the settings file
         carousel_template = getattr(settings, 'IMAGESTORE_CAROUSEL_TEMPLATE', None)

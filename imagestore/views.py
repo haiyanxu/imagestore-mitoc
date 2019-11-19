@@ -3,8 +3,8 @@ import swapper
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse
 from django.utils.decorators import method_decorator
-from django.shortcuts import get_object_or_404
-from django.http import Http404, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.http import Http404, HttpResponseRedirect, JsonResponse, HttpResponse
 from django.conf import settings
 from django.contrib.auth.decorators import permission_required, login_required
 from django.utils.translation import ugettext_lazy as _
@@ -13,6 +13,7 @@ from tagging.models import Tag, TaggedItem
 from tagging.utils import get_tag
 from django.db.models import Q
 from .utils import load_class
+from django.contrib.auth.models import User
 try:
     from dal.autocomplete import Select2QuerySetView
 except ImportError:
@@ -48,7 +49,7 @@ class AlbumListView(ListView):
     allow_empty = True
 
     def get_queryset(self):
-        albums = Album.objects.filter(is_public=True).select_related('head')
+        albums = Album.objects.filter(is_public=True,parent__isnull=True).select_related('head')
         self.e_context = dict()
         if 'username' in self.kwargs:
             user = get_object_or_404(**{'klass': User, username_field: self.kwargs['username']})
@@ -94,9 +95,12 @@ class ImageListView(ListView):
 
     get_queryset = get_images_queryset
 
-    def get_context_data(self, **kwargs):
-        context = super(ImageListView, self).get_context_data(**kwargs)
+    def get_context_data(self, *args, **kwargs):
+        context = super(ImageListView, self).get_context_data(*args, **kwargs)
         context.update(self.e_context)
+        if 'album_id' in self.kwargs:
+            album = get_object_or_404(Album, id=self.kwargs['album_id'])
+            context['album_list']=Album.objects.filter(parent=album)
         return context
 
 
@@ -227,6 +231,8 @@ class CreateImage(CreateView):
             self.object.album.save()
         return HttpResponseRedirect(self.get_success_url())
 
+    def get_success_url(self):
+        return reverse('imagestore:image-album', kwargs={'album_id':self.object.album.id, 'pk':self.object.id})
 
 def get_edit_image_queryset(self):
     if self.request.user.has_perm('%s.moderate_%s' % (image_applabel, image_classname)):
@@ -274,3 +280,16 @@ class ImageTagAutocompleteView(Select2QuerySetView):
         if self.q:
             usage = [t for t in usage if t.name.lower().startswith(self.q.lower())]
         return usage
+
+def showalbums(request):
+    return render(request, 'imagestore/showalbums.html',  {'albumroot': Album.objects.filter(level__lte=0)})
+
+def sidebarsubalbums(request):
+    if request.method == 'GET':
+        album_id = request.GET['get_parent_album']
+        subalbums = Album.objects.filter(parent=album_id)
+        return render(request, 'imagestore/sidebar_subalbums.html', {'subalbums': subalbums})
+    else:
+        # return render(request, "sidebar_subalbums.html", {'albumlist':  Album.objects.filter(parent='2806')})
+        return render(request, 'imagestore/user_info.html')
+		

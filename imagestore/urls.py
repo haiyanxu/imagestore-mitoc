@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.conf.urls import url
+from django.urls import include, path
 from .views import AlbumListView, ImageListView, UpdateImage, UpdateAlbum, \
     CreateImage, CreateAlbum, DeleteImage, DeleteAlbum, ImageView, \
     ImageTagAutocompleteView
-
+from . import views
 app_name = 'imagestore'
 
 urlpatterns = [
@@ -29,4 +30,6 @@ urlpatterns = [
     url(r'^image/(?P<pk>\d+)/update/$', UpdateImage.as_view(), name='update-image'),
 
     url(r'^tag-autocomplete/$', ImageTagAutocompleteView.as_view(), name='tag-autocomplete'),
+	url(r'^showalbums/$', views.showalbums, name = 'showalbums'),
+    url(r'^sidebarsubalbums/$', views.sidebarsubalbums, name='sidebar_subalbums'),
 ]

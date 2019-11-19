@@ -6,6 +6,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.utils.encoding import force_text
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
+from imagestore.models import Album
 
 register = template.Library()
 
@@ -27,3 +28,8 @@ def imagestore_alt(image, counter=None):
         elif image.album.brief:
             data = image.album.brief
     return mark_safe('alt="{}"'.format(conditional_escape(data)))
+
+@register.simple_tag
+def get_root_albums():
+    return Album.objects.filter(level__lte=0)
+	

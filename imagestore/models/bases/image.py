@@ -43,6 +43,8 @@ class BaseImage(models.Model):
     album = models.ForeignKey(swapper.get_model_name('imagestore', 'Album'),
                               on_delete=models.CASCADE, verbose_name=_('Album'),
                               blank=True, null=True, related_name='images')
+    summary = models.TextField(verbose_name=_('Summary'),
+                                   blank=True, null=True)			 
 
     class Meta:
         abstract = True

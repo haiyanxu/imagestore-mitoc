@@ -38,8 +38,10 @@ def process_zipfile(uploaded_album):
 
         for filename in sorted(zip.namelist()):
             try:
-                encoding = chardet.detect(filename)['encoding']
-                unicode_filename = filename.decode(encoding)
+                #encoding = chardet.detect(filename)['encoding']
+                encoding = 'UTF-8'								  
+                #unicode_filename = filename.decode(encoding)
+                unicode_filename = filename										   
             except (ValueError, TypeError):  # if detect takes unicode string
                 unicode_filename = filename
 
