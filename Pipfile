@@ -14,7 +14,6 @@ lxml = "*"
 django-cms = "==3.6.0"
 Pillow = ">=5.4.1"
 chardet = "*"
-imagestore-mitoc = {editable = true,git = "https://github.com/haiyanxu/imagestore-mitoc.git",ref = "master"}
 django-mptt = "*"
 django-crispy-forms = "*"
 django-debug-toolbar = "*"

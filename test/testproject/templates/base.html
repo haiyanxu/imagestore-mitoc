@@ -84,29 +84,29 @@
     <div class="wrapper">
 
       <!-- The sidebar -->
-      <nav id="sidebar">
-          <div id="dismiss">
-              <i class="fas fa-angle-double-left"></i>
-          </div>
-          <div class="sidebar-header">
-              <h3>Albums</h3>
-          </div>
+        <nav id="sidebar">
+            <div id="dismiss">
+                <i class="fas fa-angle-double-left"></i>
+            </div>
+            <div class="sidebar-header">
+                <h3>Albums</h3>
+            </div>
 
-          <ul class="list-unstyled components" id="accordion">
-              {% get_root_albums as albumroot %}
-              <!-- <p>Dummy Heading</p> -->
-              {% for album in albumroot %}
-              <li>
-                  <a href="{{ album.get_absolute_url }}">{{ album.name }}</a>
-                  {% if not album.is_leaf_node %}
-                      <a href="#{{ album.pk }}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-angle-down"></i></a>
-                      <ul class="collapse list-unstyled" id="{{ album.pk }}">
-                      </ul>
-                  {% endif %}
-              </li>
-              {% endfor %}
-          </ul>
-      </nav>
+            <ul class="list-unstyled components" id="accordion">
+                {% get_root_albums as albumroot %}
+                <!-- <p>Dummy Heading</p> -->
+                {% for album in albumroot %}
+                <li>
+                    <a href="{{ album.get_absolute_url }}">{{ album.name }}</a>
+                    {% if not album.is_leaf_node %}
+                        <a href="#{{ album.pk }}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-angle-down"></i></a>
+                        <ul class="collapse list-unstyled" id="{{ album.pk }}">
+                        </ul>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </nav>
 
         <!-- Open Sidebar Button -->
         <button type="button" id="open-sidebar" class="btn btn-primary btn-sm">
