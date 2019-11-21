@@ -4,6 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+imagestore-mitoc = {editable = true,path = "."}
 
 [packages]
 sorl-thumbnail = ">=12.4.0"
