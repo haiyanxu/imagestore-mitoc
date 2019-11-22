@@ -4,6 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+imagestore-mitoc = {editable = true,path = "."}
 
 [packages]
 sorl-thumbnail = ">=12.4.0"
@@ -14,6 +15,12 @@ lxml = "*"
 django-cms = "==3.6.0"
 Pillow = ">=5.4.1"
 chardet = "*"
+django-mptt = "*"
+django-crispy-forms = "*"
+django-debug-toolbar = "*"
+django-markdown2 = "*"
+django-allauth = "*"
+django-cleanup = "*"
 
 [requires]
 python_version = "3.8"

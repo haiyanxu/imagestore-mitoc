@@ -16,6 +16,7 @@ setup(
         'django-tagging',
         'swapper',
         'chardet',
+        'django-mptt',
     ],
     author='Haiyan Xu',
     author_email='haiyanxuu@gmail.com',

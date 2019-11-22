@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load thumbnail %}
+{% load static %}
+
+{% block title %}
+    {% if view_user %}
+        {% trans "Albums for user" %} {{ view_user }}
+    {% else %}
+        {% trans "All albums" %}
+    {% endif %}
+{% endblock %}
+
+{% block imagestore-breadcrumb %}
+    {% if view_user %}
+        <li class="breadcrumb-item active" aria-current="page">{% trans "Albums for user" %} {{ view_user }}</li>
+    {% else %}
+        <li class="breadcrumb-item active" aria-current="page">{% trans "All albums" %}</li>
+    {% endif %}
+{% endblock %}
+
+{% block imagestore-info %}
+    {% if view_user and IMAGESTORE_SHOW_USER %}
+        {% with user=view_user %}
+            {% include "imagestore/user_info.html" %}
+        {% endwith %}
+    {% endif %}
+{% endblock %}
+
+{% block imagestore-related %}
+    {% include "imagestore/tag-cloud.html" %}
+{% endblock %}
+
+{% block content %}
+  {% if error %}
+  {{ error }}
+  <br />
+  <br />
+  {% endif %}
+
+    <h2>{% if view_user %}
+        {% trans "Albums for user" %} {{ view_user }}
+    {% else %}
+        {% trans "All albums" %}
+    {% endif %}</h2>
+    {% include "imagestore/pagination.html" %}
+    <div class='album-list'>
+        {% for album in album_list %}
+            {% if album.get_head  or album.user == request.user %}
+            <div class='album'>
+                <div class='album-head'>
+                    <a href="{{ album.get_absolute_url }}">
+                    {% if album.get_head %}
+                        {% thumbnail album.get_head.image "150x150" crop='center' as album_head %}
+                            <img class="preview" {% if album.name %} alt="{{ album.name }}" {% endif %} onerror=this.src="{% static 'icons/imgnotfound150.png' %}" src="{{ album_head.url }}">
+                        {% endthumbnail %}
+                    {% else %}
+                        <img src="{% static 'icons/emptyalbum150.png' %}"/>
+                        [{% trans "Empty album" %}]
+                    {% endif %}
+                    <br>
+                    <span class="album-name">{{ album.name }}</span>
+                    {% if not view_user and IMAGESTORE_SHOW_USER %}
+                        <br>
+                        <span class="album-user">
+                            {% trans "user" %}: {{ album.user }}
+                        </span>
+                    {% endif %}
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

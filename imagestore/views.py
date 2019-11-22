@@ -100,6 +100,9 @@ class ImageListView(ListView):
         context.update(self.e_context)
         if 'album_id' in self.kwargs:
             album = get_object_or_404(Album, id=self.kwargs['album_id'])
+            if album.parent:
+                parentAlbum = album.parent
+                context['album_ancestors']=parentAlbum.get_ancestors(ascending=False, include_self=True)
             context['album_list']=Album.objects.filter(parent=album)
         return context
 
@@ -153,6 +156,8 @@ class ImageView(DetailView):
         context['next'] = next
         context['previous'] = previous
         context.update(self.e_context)
+        parentAlbum = image.album
+        context['album_ancestors']=parentAlbum.get_ancestors(ascending=False, include_self=True)
         return context
 
 
@@ -292,4 +297,3 @@ def sidebarsubalbums(request):
     else:
         # return render(request, "sidebar_subalbums.html", {'albumlist':  Album.objects.filter(parent='2806')})
         return render(request, 'imagestore/user_info.html')
-		
