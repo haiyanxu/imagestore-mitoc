@@ -5,6 +5,11 @@
 {% load static %}
 
 {% block imagestore-breadcrumb %}
+    {% if album_ancestors %}
+        {% for album in album_ancestors %}
+            <li class="breadcrumb-item"><a href="{{ album.get_absolute_url }}">{{ album.name }}</a></li>
+        {% endfor %}
+    {% endif %}
     <li class="breadcrumb-item active" aria-current="page">{% include "imagestore/image-scope.html" %}</li>
 {% endblock %}
 

@@ -8,22 +8,21 @@
 {% endblock %}
 
 {% block imagestore-breadcrumb %}
+    {% if album_ancestors %}
+        {% for album in album_ancestors %}
+            <li class="breadcrumb-item"><a href="{{ album.get_absolute_url }}">{{ album.name }}</a></li>
+        {% endfor %}
+    {% endif %}
     {% if view_user and IMAGESTORE_SHOW_USER %}
         <li class='breadcrumb-item'><a href="{% url 'imagestore:user-images' username=view_user %}">{% trans "User" %}: {{ view_user }}</a></li>
     {% endif %}
-    {% if album %}
-          <li class='breadcrumb-item'><a href="{{ album.get_absolute_url }}">{% trans "Album" %}: {{ album.name }}</a></li>
-    {% endif %}
-    {% if tag %}
-          <li class='breadcrumb-item'><a href="{% url 'imagestore:tag' tag=tag %}">{% trans "Tag" %}: {{ tag }}</a></li>
-    {% endif %}
-          <li class="breadcrumb-item active" aria-current="page">
-            {% if image.title %}
-                {{ image.title }}
-            {% else %}
-                {{ image.id }}
-            {% endif %}
-          </li>
+        <li class="breadcrumb-item active" aria-current="page">
+          {% if image.title %}
+              {{ image.title }}
+          {% else %}
+              {{ image.id }}
+          {% endif %}
+        </li>
 {% endblock %}
 
 {% block imagestore-info %}
