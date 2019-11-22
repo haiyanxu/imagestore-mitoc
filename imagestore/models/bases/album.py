@@ -11,7 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from sorl.thumbnail import get_thumbnail
 from sorl.thumbnail.helpers import ThumbnailError
-from mptt.models import MPTTModel, TreeForeignKey											 
+from mptt.models import MPTTModel, TreeForeignKey
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +30,6 @@ class BaseAlbum(MPTTModel):
                              help_text=_('Short description'))
     created = models.DateTimeField(verbose_name=_('Created'), auto_now_add=True)
     updated = models.DateTimeField(verbose_name=_('Updated'), auto_now=True)
-    is_public = models.BooleanField(verbose_name=_('Is public'), default=True)
     head = models.ForeignKey(swapper.get_model_name('imagestore', 'Image'),
                              on_delete=models.SET_NULL, verbose_name=_('Head'),
                              related_name='head_of', blank=True, null=True)
@@ -39,7 +38,7 @@ class BaseAlbum(MPTTModel):
                                    blank=True, null=True)
     parent = TreeForeignKey(swapper.get_model_name('imagestore', 'Album'),
                               on_delete=models.CASCADE, verbose_name=_('Parent Album'),
-                              blank=True, null=True, related_name='subalbums', db_index=True)																
+                              blank=True, null=True, related_name='subalbums', db_index=True)
 
     class Meta:
         abstract = True

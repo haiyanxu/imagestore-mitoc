@@ -49,7 +49,7 @@ class AlbumListView(ListView):
     allow_empty = True
 
     def get_queryset(self):
-        albums = Album.objects.filter(is_public=True,parent__isnull=True).select_related('head')
+        albums = Album.objects.filter(parent__isnull=True).select_related('head')
         self.e_context = dict()
         if 'username' in self.kwargs:
             user = get_object_or_404(**{'klass': User, username_field: self.kwargs['username']})
@@ -80,8 +80,7 @@ def get_images_queryset(self):
         album = get_object_or_404(Album, id=self.kwargs['album_id'])
         self.e_context['album'] = album
         images = images.filter(album=album)
-        if (not album.is_public) and\
-           (self.request.user != album.user) and\
+        if (self.request.user != album.user) and\
            (not self.request.user.has_perm('imagestore.moderate_albums')):
             raise PermissionDenied
     return images
@@ -117,8 +116,7 @@ class ImageView(DetailView):
         self.object = self.get_object()
 
         if self.object.album:
-            if (not self.object.album.is_public) and\
-               (self.request.user != self.object.album.user) and\
+            if (self.request.user != self.object.album.user) and\
                (not self.request.user.has_perm('imagestore.moderate_albums')):
                 raise PermissionDenied
 

@@ -59,7 +59,6 @@ class ImagestoreTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_empty_album(self):
-        self.album.is_public = False
         self.album.save()
         response = self.client.get(self.album.get_absolute_url())
         self.assertTrue(response.status_code == 403)
