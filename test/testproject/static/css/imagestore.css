@@ -20,6 +20,10 @@
   font-family: 'Oxygen', sans-serif;
 }
 
+#navbarNav ul li a:hover {
+  color: #A31F34; /* maroon */
+}
+
 /*------------------------SIDEBAR STYLE------------------------*/
 
 #sidebar {
