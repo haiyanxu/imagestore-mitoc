@@ -20,10 +20,6 @@ class ImageForm(FutureModelForm):
         model = Image
         exclude = ('user', 'order')
 
-    description = forms.CharField(
-        widget=forms.Textarea(attrs={'rows': 2, 'cols': 19}), required=False,
-        label=_('Description'))
-
     def __init__(self, user, *args, **kwargs):
         super(ImageForm, self).__init__(*args, **kwargs)
         self.fields['album'].queryset = Album.objects.filter(user=user)
