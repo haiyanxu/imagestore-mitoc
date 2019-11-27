@@ -80,9 +80,6 @@ def get_images_queryset(self):
         album = get_object_or_404(Album, id=self.kwargs['album_id'])
         self.e_context['album'] = album
         images = images.filter(album=album)
-        if (self.request.user != album.user) and\
-           (not self.request.user.has_perm('imagestore.moderate_albums')):
-            raise PermissionDenied
     return images
 
 
@@ -114,11 +111,6 @@ class ImageView(DetailView):
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-
-        if self.object.album:
-            if (self.request.user != self.object.album.user) and\
-               (not self.request.user.has_perm('imagestore.moderate_albums')):
-                raise PermissionDenied
 
         context = self.get_context_data(object=self.object)
         return self.render_to_response(context)
