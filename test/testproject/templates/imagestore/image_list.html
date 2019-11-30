@@ -33,11 +33,10 @@
 
 {% block controls %}
     {% if album %}
-        {% if request.user == album.user or perms.imagestore.moderate_albums %}
-            <li><a href='{% url 'imagestore:update-album' pk=album.pk %}'>{% trans "Edit album" %}</a></li>
-        {% endif %}
-        {% if imagestore_perms.add_image or request.user.is_superuser %}
+        {% if request.user == album.user or request.user.is_superuser %}
             <li><a href={% url 'imagestore:upload' %}>{% trans "Upload image" %}</a></li>
+            <li><a href='{% url 'imagestore:update-album' pk=album.pk %}'>{% trans "Edit album" %}</a></li>
+            <li><a href='{% url 'imagestore:delete-album' pk=album.pk %}'>{% trans "Delete album" %}</a></li>
         {% endif %}
     {% endif %}
 {% endblock %}
