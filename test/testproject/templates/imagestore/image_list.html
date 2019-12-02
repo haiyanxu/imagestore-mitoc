@@ -34,9 +34,9 @@
 {% block controls %}
     {% if album %}
         {% if request.user == album.user or request.user.is_superuser %}
-            <li><a href={% url 'imagestore:upload' %}>{% trans "Upload image" %}</a></li>
-            <li><a href='{% url 'imagestore:update-album' pk=album.pk %}'>{% trans "Edit album" %}</a></li>
-            <li><a href='{% url 'imagestore:delete-album' pk=album.pk %}'>{% trans "Delete album" %}</a></li>
+            <li><a href={% url 'imagestore:upload-image-to-album' album_id=album.pk %}>{% trans "Upload Image to Album" %}</a></li>
+            <li><a href='{% url 'imagestore:update-album' pk=album.pk %}'>{% trans "Edit Album" %}</a></li>
+            <li><a href='{% url 'imagestore:delete-album' pk=album.pk %}'>{% trans "Delete Album" %}</a></li>
         {% endif %}
     {% endif %}
 {% endblock %}

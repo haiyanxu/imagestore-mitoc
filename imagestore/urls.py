@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^user/(?P<username>\w+)/$', ImageListView.as_view(), name='user-images'),
 
     url(r'^upload/$', CreateImage.as_view(), name='upload'),
+    url(r'^upload/album/(?P<album_id>\d+)/$', CreateImage.as_view(), name='upload-image-to-album'),
 
     url(r'^image/(?P<pk>\d+)/$', ImageView.as_view(), name='image'),
     url(r'^album/(?P<album_id>\d+)/image/(?P<pk>\d+)/$', ImageView.as_view(), name='image-album'),

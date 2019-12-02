@@ -213,6 +213,12 @@ class CreateImage(CreateView):
     def dispatch(self, *args, **kwargs):
         return super(CreateImage, self).dispatch(*args, **kwargs)
 
+    def get_initial(self):
+        if 'album_id' in self.kwargs:
+            initial = super(CreateView, self).get_initial()
+            initial['album'] = self.kwargs['album_id']
+            return initial
+
     def get_form(self, form_class=None):
         if form_class is None:
             form_class = self.get_form_class()
