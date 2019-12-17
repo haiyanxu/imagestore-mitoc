@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 import swapper
 from django import forms
+from django.forms import modelformset_factory
 from django.urls import reverse
 try:
     from dal.autocomplete import FutureModelForm, TaggingSelect2
@@ -18,17 +19,19 @@ Album = swapper.load_model('imagestore', 'Album')
 class ImageForm(FutureModelForm):
     class Meta:
         model = Image
-        exclude = ('user', 'order')
+        # exclude = ('user', 'order')
+        exclude = ('user', 'order', 'album')
 
     def __init__(self, user, *args, **kwargs):
         super(ImageForm, self).__init__(*args, **kwargs)
-        self.fields['album'].queryset = Album.objects.filter(user=user)
-        self.fields['album'].required = True
+        # self.fields['album'].queryset = Album.objects.filter(user=user)
+        # self.fields['album'].required = True
 
         if AUTOCOMPLETE_LIGHT_INSTALLED:
             self.fields['tags'].widget = TaggingSelect2(
                 url=reverse('imagestore:tag-autocomplete'))
 
+ImageFormSet = modelformset_factory(Image, exclude=('user', 'order'))
 
 class AlbumForm(forms.ModelForm):
     class Meta:

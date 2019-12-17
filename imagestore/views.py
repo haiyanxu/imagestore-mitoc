@@ -227,6 +227,7 @@ class CreateImage(CreateView):
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
+        self.object.album = get_object_or_404(Album, id=self.kwargs['album_id'])
         self.object.save()
         if self.object.album:
             self.object.album.save()
