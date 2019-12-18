@@ -305,7 +305,10 @@ class DeleteImage(DeleteView):
     model = Image
 
     def get_success_url(self):
-        return reverse('imagestore:index')
+        image_id = self.kwargs['pk']
+        image = get_object_or_404(Image, id=image_id)
+        album_id = image.album.id
+        return reverse('imagestore:album', kwargs={'album_id':album_id})
 
     get_queryset = get_edit_image_queryset
 
