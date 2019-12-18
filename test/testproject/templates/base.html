@@ -61,10 +61,6 @@
               <li class="nav-item active">
                 <a class="nav-link" href="{% url 'imagestore:create-album' %}">New Album<span class="sr-only">(current)</span></a>
               </li> {% endif %}
-              {% if imagestore_perms.add_image or request.user.is_superuser %}
-              <li class="nav-item active">
-                <a class="nav-link" href="{% url 'imagestore:upload' %}">Upload Image<span class="sr-only">(current)</span></a>
-              </li> {% endif %}
               {% if user.is_authenticated %}
                 <li class="nav-item active">
                   <a class="nav-link" href="{% url 'account_logout' %}">Logout<span class="sr-only">(current)</span></a></li>
@@ -154,12 +150,6 @@
                     {% endblock %}
                     <div id="controls">
                         <ul>
-                            <!-- {% if imagestore_perms.add_image or request.user.is_superuser %}
-                                <li><a href={% url 'imagestore:upload' %}>{% trans "Upload image" %}</a></li>
-                            {% endif %}
-                            {% if imagestore_perms.add_album or request.user.is_superuser %}
-                                <li><a href={% url 'imagestore:create-album' %}>{% trans "Create new album" %}</a></li>
-                            {% endif %} -->
                             {% block controls %}
                             {% endblock controls %}
                         </ul>

@@ -2,9 +2,7 @@
 from __future__ import unicode_literals
 from django.conf.urls import url
 from django.urls import include, path
-from .views import AlbumListView, ImageListView, UpdateImage, UpdateAlbum, \
-    CreateImage, CreateAlbum, DeleteImage, DeleteAlbum, ImageView, \
-    ImageTagAutocompleteView
+from .views import *
 from . import views
 app_name = 'imagestore'
 
@@ -21,7 +19,6 @@ urlpatterns = [
     url(r'^user/(?P<username>\w+)/albums/', AlbumListView.as_view(), name='user'),
     url(r'^user/(?P<username>\w+)/$', ImageListView.as_view(), name='user-images'),
 
-    url(r'^upload/$', CreateImage.as_view(), name='upload'),
     url(r'^upload/album/(?P<album_id>\d+)/$', CreateImage.as_view(), name='upload-image-to-album'),
 
     url(r'^image/(?P<pk>\d+)/$', ImageView.as_view(), name='image'),
