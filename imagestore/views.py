@@ -252,10 +252,10 @@ class CreateImage(CreateView):
     @method_decorator(login_required)
     @method_decorator(permission_required('%s.add_%s' % (image_applabel, image_classname)))
     def dispatch(self, *args, **kwargs):
-        return super(CreateImageAlbum, self).dispatch(*args, **kwargs)
+        return super(CreateImage, self).dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context = super(CreateImageAlbum, self).get_context_data(**kwargs)
+        context = super(CreateImage, self).get_context_data(**kwargs)
         context['formset'] = ImageFormSet(queryset=Image.objects.none())
         return context
 
@@ -271,13 +271,12 @@ class CreateImage(CreateView):
 
     def form_valid(self, formset):
         instances = formset.save(commit=False)
-        album_id = self.kwargs['album_id']
         for instance in instances:
             # instance.day = day
             instance.user = self.request.user
             instance.album = get_object_or_404(Album, id=self.kwargs['album_id'])
             instance.save()
-        return HttpResponseRedirect(self.get_success_url(album_id = album_id))
+        return HttpResponseRedirect(self.get_success_url(album_id = self.kwargs['album_id']))
 
     def get_success_url(self, album_id):
         return reverse('imagestore:album', kwargs={'album_id':album_id})
