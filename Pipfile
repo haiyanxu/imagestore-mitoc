@@ -21,6 +21,7 @@ django-debug-toolbar = "*"
 django-markdown2 = "*"
 django-allauth = "*"
 django-cleanup = "*"
+django = "==2.2.8"
 
 [requires]
 python_version = "3.8"
