@@ -324,9 +324,6 @@ class ImageTagAutocompleteView(Select2QuerySetView):
             usage = [t for t in usage if t.name.lower().startswith(self.q.lower())]
         return usage
 
-def showalbums(request):
-    return render(request, 'imagestore/showalbums.html',  {'albumroot': Album.objects.filter(level__lte=0)})
-
 def sidebarsubalbums(request):
     if request.method == 'GET':
         album_id = request.GET['get_parent_album']
