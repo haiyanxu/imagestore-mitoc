@@ -2,8 +2,8 @@
     <li>
         <a href="{{ album.get_absolute_url }}">{{ album.name }}</a>
         {% if not album.is_leaf_node %}
-            <a href="#{{ album.pk }}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-angle-down"></i></a>
-            <ul class="collapse list-unstyled" id="{{ album.pk }}">
+            <a href="#a{{ album.pk }}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-angle-down"></i></a>
+            <ul class="collapse list-unstyled" id="a{{ album.pk }}">
             </ul>
         {% endif %}
     </li>

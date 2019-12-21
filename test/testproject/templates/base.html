@@ -5,37 +5,35 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <!-- Font Awesome CSS -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <!-- Scrollbar Custom CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
-
     {% load i18n %}
     {% load static %}
     {% load imagestore_tags %}
     {% load mptt_tags %}
 
-    <!-- jQuery 1.7.2+ or Zepto.js 1.0+ -->
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
-
-    <!-- jQuery CDN -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <!-- Popper.JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-    <!-- Bootstrap JS -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-    <!-- jQuery Custom Scroller CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-    <!-- Magnific Popup core CSS file -->
-    <link rel="stylesheet" type="text/css" href="{%  static  'magnific-popup/magnific-popup.css' %}">
-    <!-- Magnific Popup core JS file -->
-    <script type="text/javascript" src="{% static 'magnific-popup/jquery.magnific-popup.js' %}"></script>
-
     <title>{% block title %}MITOC Photo Gallery{% endblock title %}</title>
+
     {% block stylesheets %}
-    <link rel="stylesheet" type="text/css" href="{%  static  'css/imagestore.css' %}">
+      <!-- Bootstrap CSS -->
+        <link rel="stylesheet" type="text/css" href="{%  static  'css/bootstrap-4.4.1.min.css' %}">
+      <!-- Font Awesome CSS -->
+        <link rel="stylesheet" type="text/css" href="{%  static  'css/all-5.12.0.min.css' %}">
+      <!-- Imagestore CSS -->
+        <link rel="stylesheet" type="text/css" href="{%  static  'css/imagestore.css' %}">
+      <!-- Scrollbar Custom CSS -->
+        <link rel="stylesheet" type="text/css" href="{%  static  'css/jquery.mCustomScrollbar-3.1.5.min.css' %}">
+      <!-- Magnific Popup core CSS file -->
+        <link rel="stylesheet" type="text/css" href="{%  static  'magnific-popup/magnific-popup.css' %}">
+    {% endblock %}
+
+    {% block js %}
+    <!-- jQuery -->
+      <script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <!-- Bootstrap JS bundled with Popper JS -->
+      <script type="text/javascript" src="{% static 'js/bootstrap.bundle-4.4.1.min.js' %}"></script>
+    <!-- jQuery Custom Scroller -->
+      <script type="text/javascript" src="{% static 'js/jquery.mCustomScrollbar-3.1.5.concat.min.js' %}"></script>
+    <!-- Magnific Popup core JS file -->
+      <script type="text/javascript" src="{% static 'magnific-popup/jquery.magnific-popup.js' %}"></script>
     {% endblock %}
 
   </head>
@@ -91,8 +89,8 @@
                 <li>
                     <a href="{{ album.get_absolute_url }}">{{ album.name }}</a>
                     {% if not album.is_leaf_node %}
-                        <a href="#{{ album.pk }}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-angle-down"></i></a>
-                        <ul class="collapse list-unstyled" id="{{ album.pk }}">
+                        <a href="#a{{ album.pk }}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-angle-down"></i></a>
+                        <ul class="collapse list-unstyled" id="a{{ album.pk }}">
                         </ul>
                     {% endif %}
                 </li>
@@ -162,12 +160,13 @@
       <script>
       $(document).ready(function(){
             $('#accordion').on('show.bs.collapse', function (e) {
-              // alert('Event fired on album ' + e.target.id);
-              var parent_album_id = e.target.id;
+              console.log('Event fired on album ' + e.target.id);
+              var id = e.target.id;
+              var parent_album_id = id.substring(1, id.length);
               console.log("parent album id is: " + parent_album_id);
               $.get('/gallery/sidebarsubalbums/', {get_parent_album: parent_album_id}, function(data){
-                   $('#'+parent_album_id).html(data);
-                   // console.log("finished getting html:" + data);
+                   $('#a'+parent_album_id).html(data);
+                   console.log("finished getting html:" + data);
               });
           });
       });
