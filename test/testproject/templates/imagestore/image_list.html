@@ -31,20 +31,10 @@
 
 {% endblock %}
 
-{% block controls %}
-    {% if album %}
-        {% if request.user == album.user or request.user.is_superuser %}
-            <li><a href={% url 'imagestore:upload-image-to-album' album_id=album.pk %}>{% trans "Upload Image to Album" %}</a></li>
-            <li><a href='{% url 'imagestore:update-album' pk=album.pk %}'>{% trans "Edit Album" %}</a></li>
-            <li><a href='{% url 'imagestore:delete-album' pk=album.pk %}'>{% trans "Delete Album" %}</a></li>
-        {% endif %}
-    {% endif %}
-{% endblock %}
-
 {% block content %}
-    <h1>
+    <h3>
         {% include "imagestore/image-scope.html" %}
-    </h1>
+    </h3>
     {% include "imagestore/pagination.html" %}
     {% if album.tripreport %}<div class="image-description">
         {% load md2 %}{{ album.tripreport|markdown|linebreaks }}
@@ -54,84 +44,95 @@
     {% if not album_list and not image_list %}<img src="{% static 'icons/emptyalbum.png' %}"/><br> This album is empty{% endif %}
 
     {% if album_list %}
-    <div class='album-list'>
-      <h2>Sub-Albums</h2>
-        {% for album in album_list %}
-            {% if album.get_head  or album.user == request.user %}
-            <div class='album'>
-                <div class='album-head'>
-                    <a href="{{ album.get_absolute_url }}">
-                    {% if album.get_head %}
-                        {% thumbnail album.get_head.image "128x128" crop='center' as album_head %}
-                            <img class="preview" {% if album.name %} alt="{{ album.name }}" {% endif %} onerror=this.src="{% static 'icons/imgnotfound.png' %}" src="{{ album_head.url }}">
-                            <!-- <img class="preview" src="{{ album_head.url }}">   displays broken link thumbnail instead of album name when preview is not found.  -->
-                            {% empty %}
-                            <!-- <img src="{% static 'icons/imgnotfound.png' %}" {% if album.name %} alt="{{ album.name }}" {% endif %} src="{{ album_head.url }}"/> -->
-                        {% endthumbnail %}
-                    {% else %}
-                        <img src="{% static 'icons/emptyalbum.png' %}"/>
-                        [{% trans "Empty album" %}]
+        <div class='album-list'>
+          <h3>Sub-Albums</h3>
+            {% for album in album_list %}
+                {% if album.get_head  or album.user == request.user %}
+                <div class='album'>
+                    <div class='album-head'>
+                        <a href="{{ album.get_absolute_url }}">
+                        {% if album.get_head %}
+                            {% thumbnail album.get_head.image "128x128" crop='center' as album_head %}
+                                <img class="preview" {% if album.name %} alt="{{ album.name }}" {% endif %} onerror=this.src="{% static 'icons/imgnotfound.png' %}" src="{{ album_head.url }}">
+                                <!-- <img class="preview" src="{{ album_head.url }}">   displays broken link thumbnail instead of album name when preview is not found.  -->
+                                {% empty %}
+                                <!-- <img src="{% static 'icons/imgnotfound.png' %}" {% if album.name %} alt="{{ album.name }}" {% endif %} src="{{ album_head.url }}"/> -->
+                            {% endthumbnail %}
+                        {% else %}
+                            <img src="{% static 'icons/emptyalbum.png' %}"/>
+                            [{% trans "Empty album" %}]
 
-                    {% endif %}
-                    <br>
-                    <span class="album-name">{{ album.name }}</span>
-                    {% if not view_user and IMAGESTORE_SHOW_USER %}
+                        {% endif %}
                         <br>
-                        <span class="album-user">
-                            {% trans "user" %}: {{ album.user }}
-                        </span>
-                    {% endif %}
-                    </a>
+                        <span class="album-name">{{ album.name }}</span>
+                        {% if not view_user and IMAGESTORE_SHOW_USER %}
+                            <br>
+                            <span class="album-user">
+                                {% trans "user" %}: {{ album.user }}
+                            </span>
+                        {% endif %}
+                        </a>
+                    </div>
                 </div>
-            </div>
-            {% endif %}
-        {% endfor %}
-    </div>
-    <hr>
+                {% endif %}
+            {% endfor %}
+        </div>
     {% endif %}
 
-    {% if image_list %}
+    <hr>
 
-      <!-- Modal -->
-      <div class="modal fade" id="imageOptions" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Options</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div class="list-group">
-                <a href="#" class="list-group-item list-group-item-action" id="originalLink">View Original</a>
-                {% if request.user == album.user or perms.imagestore.moderate_albums %}
-                  <a href="#" class="list-group-item list-group-item-action" id="editLink">Edit</a>
-                  <a href="#" class="list-group-item list-group-item-action" id="deleteLink">Delete</a>
-                {% endif %}
+    {% if image_list %}
+        <!-- Modal -->
+            <div class="modal fade" id="imageOptions" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Options</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="list-group">
+                      <a href="#" class="list-group-item list-group-item-action" id="originalLink">View Original</a>
+                      {% if request.user == album.user or perms.imagestore.moderate_albums %}
+                        <a href="#" class="list-group-item list-group-item-action" id="editLink">Edit</a>
+                        <a href="#" class="list-group-item list-group-item-action" id="deleteLink">Delete</a>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+
+        <div id="image-thumbnails">
+          <h3>Images</h3>
+            {% for image in image_list %}
+                <div class='image-preview'>
+                {% thumbnail image.image "120x120" crop="center" as im %}
+                    <a class="thumb" rel='gallery-image[ilist]' href="{{ image.image.url }}" title="{{ image.title }}" summary="{{ image.summary }}" user="{{ image.user }}" id="{{ image.pk }}">
+                        <img class="preview" {% imagestore_alt image forloop.counter %} onerror=this.src="{% static 'icons/imgnotfound120.png' %}" src="{{ im.url }}">
+                    </a>
+                    <a href="{% include "imagestore/image-href.html" %}">
+                        {% if image.title %}
+                            <br><span class='image-title'>{{ image.title|truncatechars:20 }}</span>
+                        {% else %}
+                            {% trans 'Info' %}
+                        {% endif %}
+                    </a>
+                {% endthumbnail %}
+                </div>
+            {% endfor %}
         </div>
-      </div>
-    <div id="image-thumbnails">
-      <h2>Images</h2>
-        {% for image in image_list %}
-            <div class='image-preview'>
-            {% thumbnail image.image "120x120" crop="center" as im %}
-                <a class="thumb" rel='gallery-image[ilist]' href="{{ image.image.url }}" title="{{ image.title }}" summary="{{ image.summary }}" user="{{ image.user }}" id="{{ image.pk }}">
-                    <img class="preview" {% imagestore_alt image forloop.counter %} onerror=this.src="{% static 'icons/imgnotfound120.png' %}" src="{{ im.url }}">
-                </a>
-                <a href="{% include "imagestore/image-href.html" %}">
-                    {% if image.title %}
-                        <br><span class='image-title'>{{ image.title|truncatechars:20 }}</span>
-                    {% else %}
-                        {% trans 'Info' %}
-                    {% endif %}
-                </a>
-            {% endthumbnail %}
-            </div>
-        {% endfor %}
-    </div>
+    {% endif %}
+{% endblock %}
+
+{% block controls %}
+    {% if album %}
+        {% if request.user == album.user or request.user.is_superuser %}
+            <li><a href={% url 'imagestore:upload-image-to-album' album_id=album.pk %}>{% trans "Upload Image to Album" %}</a></li>
+            <li><a href='{% url 'imagestore:update-album' pk=album.pk %}'>{% trans "Edit Album" %}</a></li>
+            <li><a href='{% url 'imagestore:delete-album' pk=album.pk %}'>{% trans "Delete Album" %}</a></li>
+        {% endif %}
     {% endif %}
 {% endblock %}

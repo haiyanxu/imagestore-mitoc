@@ -39,100 +39,100 @@
   </head>
 
   <body>
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
-          <a class="navbar-brand" href="{% url 'home' %}">MITOC Photo Gallery</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item active">
-                <a class="nav-link" href="{% url 'imagestore:index' %}">Gallery<span class="sr-only">(current)</span></a>
-              </li>
-              {% if imagestore_perms.add_album or request.user.is_superuser %}
-              <li class="nav-item active">
-                <a class="nav-link" href="{% url 'imagestore:create-album' %}">New Album<span class="sr-only">(current)</span></a>
-              </li> {% endif %}
-              {% if user.is_authenticated %}
-                <li class="nav-item active">
-                  <a class="nav-link" href="{% url 'account_logout' %}">Logout<span class="sr-only">(current)</span></a></li>
-              {% else %}
-                <li class="nav-item active">
-                  <a class="nav-link" href="{% url 'account_signup' %}">Signup<span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item active">
-                  <a class="nav-link" href="{% url 'account_login' %}">Login<span class="sr-only">(current)</span></a>
-                </li>
-              {% endif %}
-            </ul>
-          </div>
-        </div>
-      </nav>
-
-    <div class="wrapper">
-
-      <!-- The sidebar -->
-        <nav id="sidebar">
-            <div id="dismiss">
-                <i class="fas fa-angle-double-left"></i>
-            </div>
-            <div class="sidebar-header">
-                <h3>Albums</h3>
-            </div>
-
-            <ul class="list-unstyled components" id="accordion">
-                {% get_root_albums as albumroot %}
-                <!-- <p>Dummy Heading</p> -->
-                {% for album in albumroot %}
-                <li>
-                    <a href="{{ album.get_absolute_url }}">{{ album.name }}</a>
-                    {% if not album.is_leaf_node %}
-                        <a href="#a{{ album.pk }}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-angle-down"></i></a>
-                        <ul class="collapse list-unstyled" id="a{{ album.pk }}">
-                        </ul>
+      <!-- Navbar -->
+          <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'home' %}">MITOC Photo Gallery</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                  <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                      <a class="nav-link" href="{% url 'imagestore:index' %}">Gallery<span class="sr-only">(current)</span></a>
+                    </li>
+                    {% if imagestore_perms.add_album or request.user.is_superuser %}
+                    <li class="nav-item active">
+                      <a class="nav-link" href="{% url 'imagestore:create-album' %}">New Album<span class="sr-only">(current)</span></a>
+                    </li> {% endif %}
+                    {% if user.is_authenticated %}
+                      <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'account_logout' %}">Logout<span class="sr-only">(current)</span></a></li>
+                    {% else %}
+                      <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'account_signup' %}">Signup<span class="sr-only">(current)</span></a>
+                      </li>
+                      <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'account_login' %}">Login<span class="sr-only">(current)</span></a>
+                      </li>
                     {% endif %}
-                </li>
-                {% endfor %}
-            </ul>
-        </nav>
+                  </ul>
+                </div>
+              </div>
+            </nav>
 
-        <!-- Open Sidebar Button -->
-        <button type="button" id="open-sidebar" class="btn btn-primary btn-sm">
-          <i class="fas fa-angle-double-right"></i>
-        </button>
+        <div class="wrapper">
+
+            <!-- The sidebar -->
+                <nav id="sidebar">
+                    <div id="dismiss">
+                        <i class="fas fa-angle-double-left"></i>
+                    </div>
+                    <div class="sidebar-header">
+                        <h3>Albums</h3>
+                    </div>
+
+                    <ul class="list-unstyled components" id="accordion">
+                        {% get_root_albums as albumroot %}
+                        <!-- <p>Dummy Heading</p> -->
+                        {% for album in albumroot %}
+                        <li>
+                            <a href="{{ album.get_absolute_url }}">{{ album.name }}</a>
+                            {% if not album.is_leaf_node %}
+                                <a href="#a{{ album.pk }}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-angle-down"></i></a>
+                                <ul class="collapse list-unstyled" id="a{{ album.pk }}">
+                                </ul>
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </nav>
+
+            <!-- Open Sidebar Button -->
+                <button type="button" id="open-sidebar" class="btn btn-primary btn-sm">
+                  <i class="fas fa-angle-double-right"></i>
+                </button>
 
         <div id="content" class="content">
 
             {% block breadcrumb %}
                 <nav aria-label="breadcrumb">
-                  <ol class="breadcrumb">
-                    <!-- {% if request.path != '/' %}
-                        <li class="breadcrumb-item"><a href="/">{% trans "Home" %}</a></li>
-                    {% endif %}
-                    {% if request.path == '/' %}
-                        <li class="breadcrumb-item"><a href="/">{% trans "Home" %}</a></li>
-                    {% endif %} -->
-                    <li class="breadcrumb-item"><a href="/">{% trans "Home" %}</a></li>
-                    {% if request.path != imagestore_index_url %}
-                        <li class="breadcrumb-item"><a href="{{ imagestore_index_url }}">{% trans "Gallery" %}</a></li>
-                    {% endif %}
-                    {% block imagestore-breadcrumb %}
-                    {% endblock %}
-                </ol>
-              </nav>
+                    <ol class="breadcrumb">
+                      <!-- {% if request.path != '/' %}
+                          <li class="breadcrumb-item"><a href="/">{% trans "Home" %}</a></li>
+                      {% endif %}
+                      {% if request.path == '/' %}
+                          <li class="breadcrumb-item"><a href="/">{% trans "Home" %}</a></li>
+                      {% endif %} -->
+                      <li class="breadcrumb-item"><a href="/">{% trans "Home" %}</a></li>
+                      {% if request.path != imagestore_index_url %}
+                          <li class="breadcrumb-item"><a href="{{ imagestore_index_url }}">{% trans "Gallery" %}</a></li>
+                      {% endif %}
+                      {% block imagestore-breadcrumb %}
+                      {% endblock %}
+                    </ol>
+                </nav>
             {% endblock %}
 
             {% if messages %}
-            <div>
-              <strong>Messages:</strong>
-              <ul>
-                {% for message in messages %}
-                <li>{{message}}</li>
-                {% endfor %}
-              </ul>
-            </div>
+                <div>
+                  <strong>Messages:</strong>
+                  <ul>
+                    {% for message in messages %}
+                    <li>{{message}}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
             {% endif %}
 
             {% block content %}
@@ -140,16 +140,16 @@
             {% endblock %}
 
             {% block content-related %}
-                    {% block imagestore-info %}
-                    {% endblock %}
-                    <div id="controls">
-                        <ul>
-                            {% block controls %}
-                            {% endblock controls %}
-                        </ul>
-                    </div>
-                    {% block imagestore-related %}
-                    {% endblock %}
+                {% block imagestore-info %}
+                {% endblock %}
+                <div id="controls">
+                    <ul>
+                        {% block controls %}
+                        {% endblock controls %}
+                    </ul>
+                </div>
+                {% block imagestore-related %}
+                {% endblock %}
             {% endblock %}
 
           </div>

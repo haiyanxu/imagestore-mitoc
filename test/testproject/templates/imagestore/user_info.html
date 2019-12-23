@@ -4,7 +4,7 @@
 {# if we can't get profile then return user model itself #}
 {% with profile=user.get_profile|default_if_none:user %}
     <div class="user-info">
-        <h3>{% trans "User" %}</h3>
+        <h4>{% trans "User" %}</h4>
         <div class="avatar">
             <a href="{{ profile.get_absolute_url }}">
                 {% thumbnail profile.avatar "80x80" as avatar %}

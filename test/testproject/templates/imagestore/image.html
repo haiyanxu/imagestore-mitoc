@@ -36,11 +36,9 @@
 {% endblock %}
 
 {% block content %}
-        {% if image.title %}<h2>{{ image.title }}</h2>{% endif %}
+        {% if image.title %}<h3>{{ image.title }}</h3>{% endif %}
         {% if album or tag or view_user %}
-            <h3>
-                    {% include "imagestore/image-scope.html" %}
-            </h3>
+            <h4>{% include "imagestore/image-scope.html" %}</h4>
         {% endif %}
         {% if image.summary %}<div class="image-description">
             {{ image.summary }}
@@ -76,7 +74,7 @@
 {% block imagestore-related %}
 
      <div class="tagging">
-            <h3>{% trans "Tags" %}</h3>
+            <h4>{% trans "Tags" %}</h4>
             {% tags_for_object image as itags %}
             {% for tag in itags %}
                 <a href="{% url 'imagestore:tag' tag.name %}">{{ tag.name }}</a>
