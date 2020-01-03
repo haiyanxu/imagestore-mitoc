@@ -39,8 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    # 'allauth.socialaccount.providers.google',
-    # 'accounts',
     'crispy_forms',
     'mptt',
     'imagestore',
@@ -49,8 +47,6 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django_markdown2',
     'django_cleanup.apps.CleanupConfig',
-    # 'pages',
-    # 'users',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -58,19 +54,21 @@ INSTALLED_APPS = [
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-# AUTH_USER_MODEL = 'users.CustomUser'
-
+#IMAGESTORE CONFIGURATION:
 IMAGESTORE_TEMPLATE = 'base.html'
 IMAGESTORE_SELF_MANAGE = True
 IMAGESTORE_SHOW_USER = True
 IMAGESTORE_ALBUMS_ON_PAGE = 100
 IMAGESTORE_IMAGES_ON_PAGE = 100
-# ACCOUNT_AUTHENTICATION_METHOD = 'email'
+
+#ALLAUTH CONFIGURATION:
+ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS=7
 # ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
 
 MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
