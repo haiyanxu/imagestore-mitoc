@@ -34,14 +34,15 @@ class ImagestoreTest(TestCase):
     def _upload_test_image(self, username='zeus', password='zeus'):
         self.client.login(username=username, password=password)
         self.image_file = open(os.path.join(os.path.dirname(__file__), 'test_img.jpg'), 'rb')
-        response = self.client.get(reverse('imagestore:upload'))
+        album_id = Album.objects.filter(user=self.user)[0].id
+        response = self.client.get(reverse('imagestore:upload-image-to-album', kwargs={'album_id': album_id}))
         self.assertEqual(response.status_code, 200)
         tree = html.fromstring(response.content)
         values = dict(tree.xpath('//form[@method="post"]')[0].form_values())
         values['image'] = self.image_file
-        values['album'] = Album.objects.filter(user=self.user)[0].id
+        # values['album'] = Album.objects.filter(user=self.user)[0].id
         values['some_int'] = random.randint(1, 100)
-        response = self.client.post(reverse('imagestore:upload'), values, follow=True)
+        response = self.client.post(reverse('imagestore:upload-image-to-album', kwargs={'album_id': album_id}), values, follow=True)
         return response
 
     def _create_test_album(self, username='zeus', password='zeus'):
