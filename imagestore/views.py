@@ -50,7 +50,7 @@ class AlbumListView(ListView):
     allow_empty = True
 
     def get_queryset(self):
-        albums = Album.objects.filter(parent__isnull=True).select_related('head')
+        albums = Album.objects.filter(parent__isnull=True).select_related('head').order_by('order')
         self.e_context = dict()
         if 'username' in self.kwargs:
             user = get_object_or_404(**{'klass': User, username_field: self.kwargs['username']})
