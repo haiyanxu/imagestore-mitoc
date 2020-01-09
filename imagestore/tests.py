@@ -31,18 +31,38 @@ class ImagestoreTest(TestCase):
         if not self.image_file.closed:
             self.image_file.close()
 
+    # def _upload_test_image(self, username='zeus', password='zeus'):
+    #     self.client.login(username=username, password=password)
+    #     self.image_file = open(os.path.join(os.path.dirname(__file__), 'test_img.jpg'), 'rb')
+    #     album_id = Album.objects.filter(user=self.user)[0].id
+    #     response = self.client.get(reverse('imagestore:upload-image-to-album', kwargs={'album_id': album_id}))
+    #     self.assertEqual(response.status_code, 200)
+    #     tree = html.fromstring(response.content)
+    #     values = dict(tree.xpath('//form[@method="post"]')[0].form_values())
+    #     print(values)
+    #     values['image'] = self.image_file
+    #     # values['album'] = Album.objects.filter(user=self.user)[0].id
+    #     values['title'] = "title"
+    #     response = self.client.post(reverse('imagestore:upload-image-to-album', kwargs={'album_id': album_id}), values, follow=True)
+    #     return response
+
     def _upload_test_image(self, username='zeus', password='zeus'):
         self.client.login(username=username, password=password)
         self.image_file = open(os.path.join(os.path.dirname(__file__), 'test_img.jpg'), 'rb')
         album_id = Album.objects.filter(user=self.user)[0].id
         response = self.client.get(reverse('imagestore:upload-image-to-album', kwargs={'album_id': album_id}))
         self.assertEqual(response.status_code, 200)
-        tree = html.fromstring(response.content)
-        values = dict(tree.xpath('//form[@method="post"]')[0].form_values())
-        values['image'] = self.image_file
-        # values['album'] = Album.objects.filter(user=self.user)[0].id
-        values['title'] = "title"
-        response = self.client.post(reverse('imagestore:upload-image-to-album', kwargs={'album_id': album_id}), values, follow=True)
+        response = self.client.post(
+            reverse('imagestore:upload-image-to-album', kwargs={'album_id': album_id}),
+            data={
+                'form-TOTAL_FORMS': 1,
+                'form-INITIAL_FORMS': 0,
+                'form-0-image': self.image_file,
+                'form-0-title': "title",
+                'form-0-summary': "this is the summary",
+            },
+            follow=True,
+        )
         return response
 
     def _create_test_album(self, username='zeus', password='zeus'):
@@ -113,15 +133,21 @@ class ImagestoreTest(TestCase):
     def test_tagging(self):
         response = self._create_test_album()
         self.client.login(username='zeus', password='zeus')
-        response = self.client.get(reverse('imagestore:upload'))
+        album_id = Album.objects.filter(user=self.user)[0].id
+        response = self.client.get(reverse('imagestore:upload-image-to-album', kwargs={'album_id': album_id}), follow=True)
         self.assertEqual(response.status_code, 200)
-        tree = html.fromstring(response.content)
-        values = dict(tree.xpath('//form[@method="post"]')[0].form_values())
-        values['image'] = self.image_file
-        values['tags'] = 'one, tow, three'
-        values['some_int'] = random.randint(1, 100)
-        values['album'] = Album.objects.filter(user=self.user)[0].id
-        self.client.post(reverse('imagestore:upload'), values, follow=True)
+        response = self.client.post(
+            reverse('imagestore:upload-image-to-album', kwargs={'album_id': album_id}),
+            data={
+                'form-TOTAL_FORMS': 1,
+                'form-INITIAL_FORMS': 0,
+                'form-0-image': self.image_file,
+                'form-0-title': "title",
+                'form-0-summary': "this is the summary",
+                'form-0-tags': "one, two, three",
+            },
+            follow=True,
+        )
         self.assertEqual(response.status_code, 200)
         response = self.client.get(reverse('imagestore:tag', kwargs={'tag': 'one'}))
         self.assertEqual(response.status_code, 200)
