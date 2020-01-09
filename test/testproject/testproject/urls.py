@@ -23,9 +23,8 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^gallery/', include(('imagestore.urls', 'imagestore'), namespace='imagestore')),
     path('accounts/', include('allauth.urls')),
-    url(r'^$', TemplateView.as_view(template_name='main.html'), name='home'),
+    url(r'^', include(('imagestore.urls', 'imagestore'), namespace='imagestore')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
