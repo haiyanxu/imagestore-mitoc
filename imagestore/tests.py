@@ -20,31 +20,11 @@ Album = swapper.load_model('imagestore', 'Album')
 
 class ImagestoreTest(TestCase):
     def setUp(self):
-        self.image_file = open(os.path.join(os.path.dirname(__file__), 'test_img.jpg'), 'rb')
         self.user = User.objects.create_user('zeus', 'zeus@example.com', 'zeus')
         self.user.user_permissions.add(*Permission.objects.filter(content_type__app_label='imagestore'))
         self.client = Client()
         self.album = Album(name='test album', user=self.user)
         self.album.save()
-
-    def tearDown(self):
-        if not self.image_file.closed:
-            self.image_file.close()
-
-    # def _upload_test_image(self, username='zeus', password='zeus'):
-    #     self.client.login(username=username, password=password)
-    #     self.image_file = open(os.path.join(os.path.dirname(__file__), 'test_img.jpg'), 'rb')
-    #     album_id = Album.objects.filter(user=self.user)[0].id
-    #     response = self.client.get(reverse('imagestore:upload-image-to-album', kwargs={'album_id': album_id}))
-    #     self.assertEqual(response.status_code, 200)
-    #     tree = html.fromstring(response.content)
-    #     values = dict(tree.xpath('//form[@method="post"]')[0].form_values())
-    #     print(values)
-    #     values['image'] = self.image_file
-    #     # values['album'] = Album.objects.filter(user=self.user)[0].id
-    #     values['title'] = "title"
-    #     response = self.client.post(reverse('imagestore:upload-image-to-album', kwargs={'album_id': album_id}), values, follow=True)
-    #     return response
 
     def _upload_test_image(self, username='zeus', password='zeus'):
         self.client.login(username=username, password=password)
@@ -63,6 +43,7 @@ class ImagestoreTest(TestCase):
             },
             follow=True,
         )
+        self.image_file.close()
         return response
 
     def _create_test_album(self, username='zeus', password='zeus'):
@@ -78,17 +59,6 @@ class ImagestoreTest(TestCase):
     def test_empty_index(self):
         response = self.client.get(reverse('imagestore:index'))
         self.assertEqual(response.status_code, 200)
-
-    # def test_empty_album(self):
-    #     self.album.is_public = False
-    #     self.album.save()
-    #     response = self.client.get(self.album.get_absolute_url())
-    #     self.assertTrue(response.status_code == 403)
-    #     self.client.login(username='zeus', password='zeus')
-    #     self.user.is_superuser = True
-    #     self.user.save()
-    #     response = self.client.get(self.album.get_absolute_url())
-    #     self.assertEqual(response.status_code, 200)
 
     def test_user(self):
         response = self.client.get(reverse('imagestore:user', kwargs={'username': 'zeus'}))
@@ -136,6 +106,7 @@ class ImagestoreTest(TestCase):
         album_id = Album.objects.filter(user=self.user)[0].id
         response = self.client.get(reverse('imagestore:upload-image-to-album', kwargs={'album_id': album_id}), follow=True)
         self.assertEqual(response.status_code, 200)
+        self.image_file = open(os.path.join(os.path.dirname(__file__), 'test_img.jpg'), 'rb')
         response = self.client.post(
             reverse('imagestore:upload-image-to-album', kwargs={'album_id': album_id}),
             data={
@@ -148,6 +119,7 @@ class ImagestoreTest(TestCase):
             },
             follow=True,
         )
+        self.image_file.close()
         self.assertEqual(response.status_code, 200)
         response = self.client.get(reverse('imagestore:tag', kwargs={'tag': 'one'}))
         self.assertEqual(response.status_code, 200)
