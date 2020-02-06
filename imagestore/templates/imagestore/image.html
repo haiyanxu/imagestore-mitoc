@@ -8,22 +8,21 @@
 {% endblock %}
 
 {% block imagestore-breadcrumb %}
+    {% if album_ancestors %}
+        {% for album in album_ancestors %}
+            <li class="breadcrumb-item"><a href="{{ album.get_absolute_url }}">{{ album.name }}</a></li>
+        {% endfor %}
+    {% endif %}
     {% if view_user and IMAGESTORE_SHOW_USER %}
-        <li class='scope-view-user'><a href="{% url 'imagestore:user-images' username=view_user %}">{% trans "User" %}: {{ view_user }}</a> <span class="divider">/</span></li>
+        <li class='breadcrumb-item'><a href="{% url 'imagestore:user-images' username=view_user %}">{% trans "User" %}: {{ view_user }}</a></li>
     {% endif %}
-    {% if album %}
-        <li class='scope-album'><a href="{{ album.get_absolute_url }}">{% trans "Album" %}: {{ album.name }}</a> <span class="divider">/</span></li>
-    {% endif %}
-    {% if tag %}
-        <li class='scope-tag'><a href="{% url 'imagestore:tag' tag=tag %}">{% trans "Tag" %}: {{ tag }}</a> <span class="divider">/</span></li>
-    {% endif %}
-    <li>
-        {% if image.title %}
-            {{ image.title }}
-        {% else %}
-            {{ image.id }}
-        {% endif %}
-    </li>
+        <li class="breadcrumb-item active" aria-current="page">
+          {% if image.title %}
+              {{ image.title }}
+          {% else %}
+              {{ image.id }}
+          {% endif %}
+        </li>
 {% endblock %}
 
 {% block imagestore-info %}
@@ -37,11 +36,13 @@
 {% endblock %}
 
 {% block content %}
-        {% if image.title %}<h1>{{ image.title }}</h1>{% endif %}
+        {% if image.title %}<h3>{{ image.title }}</h3>{% endif %}
         {% if album or tag or view_user %}
-            <h2>
-                    {% include "imagestore/image-scope.html" %}
-            </h2>
+            <h4>{% include "imagestore/image-scope.html" %}</h4>
+        {% endif %}
+        {% if image.summary %}<div class="image-description">
+            {{ image.summary }}
+        </div>
         {% endif %}
         <div class="image-description">
             {{ image.description }}
@@ -73,7 +74,7 @@
 {% block imagestore-related %}
 
      <div class="tagging">
-            <h2>{% trans "Tags" %}</h2>
+            <h4>{% trans "Tags" %}</h4>
             {% tags_for_object image as itags %}
             {% for tag in itags %}
                 <a href="{% url 'imagestore:tag' tag.name %}">{{ tag.name }}</a>
@@ -81,7 +82,7 @@
      </div>
      {% if image.place %}
          <div class='place'>
-            <h2>{% trans "Place" %}</h2>
+            <h3>{% trans "Place" %}</h3>
             <a href="{{ image.place.get_absolute_url }}">{{ image.place.name }} →</a>
          </div>
      {% endif %}

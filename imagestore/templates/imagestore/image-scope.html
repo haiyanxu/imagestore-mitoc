@@ -1,5 +1,16 @@
 {% load i18n %}
+
 {% if view_user %}
+    {% trans "User" %}: {{ view_user }}
+{% endif %}
+{% if album %}
+    {% trans "Album" %}: {{ album.name }}
+{% endif %}
+{% if tag %}
+    {% trans "Tag" %}: {{ tag }}
+{% endif %}
+
+<!-- {% if view_user %}
     {% if scope_tag %}<{{ scope_tag }} class='scope-view-user'>{% endif %}
         {% trans "User" %}: {{ view_user }}
     {% if scope_tag %}</{{ scope_tag }}>{% endif %}
@@ -13,4 +24,4 @@
     {% if scope_tag %}<{{ scope_tag }} class='scope-album'>{% endif %}
     {% trans "Tag" %}: {{ tag }}
     {% if scope_tag %}</{{ scope_tag }}>{% endif %}
-{% endif %}
+{% endif %} -->

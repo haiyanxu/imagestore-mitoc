@@ -1,6 +1,7 @@
-{% extends "imagestore/base.html" %}
+{% extends "base.html" %}
 {% load i18n %}
 {% load thumbnail %}
+{% load static %}
 
 {% block title %}
     {% if view_user %}
@@ -11,13 +12,11 @@
 {% endblock %}
 
 {% block imagestore-breadcrumb %}
-    <li>
-        {% if view_user %}
-            {% trans "Albums for user" %} {{ view_user }}
-        {% else %}
-            {% trans "All albums" %}
-        {% endif %}
-    </li>
+    {% if view_user %}
+        <li class="breadcrumb-item active" aria-current="page">{% trans "Albums for user" %} {{ view_user }}</li>
+    {% else %}
+        <li class="breadcrumb-item active" aria-current="page">{% trans "All albums" %}</li>
+    {% endif %}
 {% endblock %}
 
 {% block imagestore-info %}
@@ -33,11 +32,17 @@
 {% endblock %}
 
 {% block content %}
-    <h1>{% if view_user %}
+  {% if error %}
+  {{ error }}
+  <br />
+  <br />
+  {% endif %}
+
+    <h3>{% if view_user %}
         {% trans "Albums for user" %} {{ view_user }}
     {% else %}
         {% trans "All albums" %}
-    {% endif %}</h1>
+    {% endif %}</h3>
     {% include "imagestore/pagination.html" %}
     <div class='album-list'>
         {% for album in album_list %}
@@ -47,9 +52,10 @@
                     <a href="{{ album.get_absolute_url }}">
                     {% if album.get_head %}
                         {% thumbnail album.get_head.image "150x150" crop='center' as album_head %}
-                            <img class="preview" {% if album.name %} alt="{{ album.name }}" {% endif %} src="{{ album_head.url }}">
+                            <img class="preview" {% if album.name %} alt="{{ album.name }}" {% endif %} onerror=this.src="{% static 'icons/imgnotfound150.png' %}" src="{{ album_head.url }}">
                         {% endthumbnail %}
                     {% else %}
+                        <img src="{% static 'icons/emptyalbum150.png' %}"/>
                         [{% trans "Empty album" %}]
                     {% endif %}
                     <br>
@@ -66,5 +72,4 @@
             {% endif %}
         {% endfor %}
     </div>
-    {% include "imagestore/pagination.html" %}
 {% endblock %}
