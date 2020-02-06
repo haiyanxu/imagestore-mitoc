@@ -24,7 +24,8 @@ from django.views.generic import TemplateView
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
-    url(r'^', include(('imagestore.urls', 'imagestore'), namespace='imagestore')),
+    path('', include('imagestore.urls')),
+    # url(r'^', include(('imagestore.urls', 'imagestore'), namespace='imagestore')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
