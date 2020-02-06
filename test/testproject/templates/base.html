@@ -154,6 +154,15 @@
           <div class="overlay"></div>
       </div>
 
+
+      {% if form %}<body onbeforeunload="return confirmLeavePage()">{% endif %}
+
+      <script>
+          function confirmLeavePage() {
+            return "This page is asking you to confirm that you want to leave - data you have entered may not be saved.";
+          }
+      </script>
+
       <script>
       $(document).ready(function(){
             $('#accordion').on('show.bs.collapse', function (e) {
