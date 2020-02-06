@@ -164,6 +164,11 @@
       </script>
 
       <script>
+
+      $('form').submit(function () {
+        window.onbeforeunload = null;
+      });
+
       $(document).ready(function(){
             $('#accordion').on('show.bs.collapse', function (e) {
               console.log('Event fired on album ' + e.target.id);

@@ -66,7 +66,7 @@
 
 {% block controls %}
     {% if request.user == image.user or perms.imagestore.moderate_images %}
-        <li><a href="{% url 'imagestore:update-image' image.id %}">{% trans "Edit info" %}</a></li>
+        <li><a href="{% url 'imagestore:update-image' image.id %}">{% trans "Edit image" %}</a></li>
         <li><a href="{% url 'imagestore:delete-image' image.id %}">{% trans "Delete image" %}</a></li>
     {% endif %}
 {% endblock %}
