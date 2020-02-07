@@ -100,6 +100,29 @@ class ImagestoreTest(TestCase):
         self.test_user()
         self.assertIsNotNone(img.title)
 
+    def test_invalid_image_upload(self):
+        response = self._create_test_album()
+        self.client.login(username='zeus', password='zeus')
+        self.image_file = open(os.path.join(os.path.dirname(__file__), 'nonimg.jpg'), 'rb')
+        album_id = Album.objects.filter(user=self.user)[0].id
+        response = self.client.get(reverse('imagestore:upload-image-to-album', kwargs={'album_id': album_id}))
+        self.assertEqual(response.status_code, 200)
+        response = self.client.post(
+            reverse('imagestore:upload-image-to-album', kwargs={'album_id': album_id}),
+            data={
+                'form-TOTAL_FORMS': 1,
+                'form-INITIAL_FORMS': 0,
+                'form-0-image': self.image_file,
+                'form-0-title': "title nonimg",
+                'form-0-summary': "summary nonimg",
+            },
+            follow=True,
+        )
+        self.image_file.close()
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'There is 1 error in your submitted form.')
+        self.assertContains(response, 'Upload a valid image. The file you uploaded was either not an image or a corrupted image.')
+
     def test_tagging(self):
         response = self._create_test_album()
         self.client.login(username='zeus', password='zeus')

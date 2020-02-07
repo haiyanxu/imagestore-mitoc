@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 import swapper
 from .forms import ImageFormSet
 from django.core.exceptions import PermissionDenied
+from django.contrib import messages
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.shortcuts import get_object_or_404, render
@@ -268,11 +269,25 @@ class CreateImage(CreateView):
         formset = ImageFormSet(request.POST, request.FILES)
         if formset.is_valid():
             return self.form_valid(formset)
+        # Handle errors through django messages framework
+        else:
+            # Display total number of errors in formset
+            if formset.total_error_count() == 1:
+                messages.add_message(request, messages.ERROR, 'There is 1 error in your submitted form.')
+            else:
+                messages.add_message(request, messages.ERROR, 'There are ' + str(formset.total_error_count()) + ' errors in your forms.')
+            # Display each error
+            form_count = 0
+            for dict_item in formset.errors:
+                form_count += 1
+                for key in dict_item:
+                    messages.add_message(request, messages.ERROR, 'Error in form ' + str(form_count) + ': ' + key)
+                    messages.add_message(request, messages.ERROR, dict_item[key])
+            return HttpResponseRedirect(reverse('imagestore:upload-image-to-album', kwargs={'album_id': self.kwargs['album_id']}))
 
     def form_valid(self, formset):
         instances = formset.save(commit=False)
         for instance in instances:
-            # instance.day = day
             instance.user = self.request.user
             instance.album = get_object_or_404(Album, id=self.kwargs['album_id'])
             instance.save()
