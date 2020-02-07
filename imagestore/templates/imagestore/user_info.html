@@ -5,18 +5,18 @@
 {% with profile=user.get_profile|default_if_none:user %}
     <div class="user-info">
         <h4>{% trans "User" %}</h4>
-        <div class="avatar">
+        <!-- <div class="avatar">
             <a href="{{ profile.get_absolute_url }}">
                 {% thumbnail profile.avatar "80x80" as avatar %}
                     <img src="{{ avatar.url }}" alt="avatar">
                 {% empty %}
                 {% endthumbnail %}
             </a>
-        </div>
+        </div> -->
         <div class="user-name">
             <!-- <a href="{{ user.get_absolute_url }}"> -->
-            <a href="{% url 'imagestore:user' username=user %}">
-                {{ user }}
+            <a href="{% url 'imagestore:user' username=user.username %}">
+                {{ user.username }}
             </a>
         </div>
      </div>
