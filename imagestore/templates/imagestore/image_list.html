@@ -63,7 +63,7 @@
 
                         {% endif %}
                         <br>
-                        <span class="album-name">{{ album.name }}</span>
+                        <span class="album-name" title="{{ album.name }}">{{ album.name|truncatechars:30 }}</span>
                         {% if not view_user and IMAGESTORE_SHOW_USER %}
                             <br>
                             <span class="album-user">
@@ -111,7 +111,7 @@
                     <a class="thumb" rel='gallery-image[ilist]' href="{{ image.image.url }}" title="{{ image.title }}" summary="{{ image.summary }}" user="{{ image.user }}" id="{{ image.pk }}">
                         <img class="preview" {% imagestore_alt image forloop.counter %} onerror=this.src="{% static 'icons/imgnotfound120.png' %}" src="{{ im.url }}">
                     </a>
-                    <a href="{% include "imagestore/image-href.html" %}">
+                    <a href="{% include "imagestore/image-href.html" %}" title="{{ image.title }}">
                         {% if image.title %}
                             <br><span class='image-title'>{{ image.title|truncatechars:20 }}</span>
                         {% else %}

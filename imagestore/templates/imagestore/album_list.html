@@ -59,7 +59,7 @@
                         [{% trans "Empty album" %}]
                     {% endif %}
                     <br>
-                    <span class="album-name">{{ album.name|truncatechars:30 }}</span>
+                    <span class="album-name" title="{{ album.name }}">{{ album.name|truncatechars:30 }}</span>
                     {% if not view_user and IMAGESTORE_SHOW_USER %}
                         <br>
                         <span class="album-user">
