@@ -163,10 +163,6 @@ a[data-toggle="collapse"] {
 
 /*----------------END SIDEBAR STYLE----------------*/
 
-/* .content{
-  padding: 20px;
-} */
-
 #content {
     width: 100%;
     padding: 40px;
@@ -229,6 +225,13 @@ img.current {
     margin-right: 300px;
 }
 
+.album-list {
+    /* display: flex; */
+    width: 100%;
+    display: block;
+    clear: both;
+}
+
 .album-list .album {
     width: 160px;
     height: 250px;
@@ -236,6 +239,7 @@ img.current {
     padding: 5px;
     margin: 10px;
     overflow: hidden;
+    display: block;
 }
 
 .album-name {
@@ -266,6 +270,12 @@ img.current {
 
 .user-info {
     padding: 20px 0;
+    clear: both;
+}
+
+#image-thumbnails {
+  width: 100%;
+  clear: both;
 }
 
 .image-preview {

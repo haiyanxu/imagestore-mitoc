@@ -28,7 +28,6 @@
             {% include "imagestore/user_info.html" %}
         {% endwith %}
     {% endif %}
-
 {% endblock %}
 
 {% block content %}
@@ -36,16 +35,18 @@
         {% include "imagestore/image-scope.html" %}
     </h3>
     {% include "imagestore/pagination.html" %}
-    {% if album.tripreport %}<div class="image-description">
+    {% if album.tripreport %}
+      <div class="image-description">
         {% load md2 %}{{ album.tripreport|markdown|linebreaks }}
-    </div>
+      </div>
     {% endif %}
 
     {% if not album_list and not image_list %}<img src="{% static 'icons/emptyalbum.png' %}"/><br> This album is empty{% endif %}
 
     {% if album_list %}
+    <hr>
+    <h3>Sub-Albums</h3>
         <div class='album-list'>
-          <h3>Sub-Albums</h3>
             {% for album in album_list %}
                 {% if album.get_head  or album.user == request.user %}
                 <div class='album'>
@@ -54,9 +55,7 @@
                         {% if album.get_head %}
                             {% thumbnail album.get_head.image "128x128" crop='center' as album_head %}
                                 <img class="preview" {% if album.name %} alt="{{ album.name }}" {% endif %} onerror=this.src="{% static 'icons/imgnotfound.png' %}" src="{{ album_head.url }}">
-                                <!-- <img class="preview" src="{{ album_head.url }}">   displays broken link thumbnail instead of album name when preview is not found.  -->
                                 {% empty %}
-                                <!-- <img src="{% static 'icons/imgnotfound.png' %}" {% if album.name %} alt="{{ album.name }}" {% endif %} src="{{ album_head.url }}"/> -->
                             {% endthumbnail %}
                         {% else %}
                             <img src="{% static 'icons/emptyalbum.png' %}"/>
@@ -78,8 +77,6 @@
             {% endfor %}
         </div>
     {% endif %}
-
-    <hr>
 
     {% if image_list %}
         <!-- Modal -->
@@ -105,7 +102,8 @@
               </div>
             </div>
 
-        <div id="image-thumbnails">
+        <div id ="image-thumbnails">
+          <hr>
           <h3>Images</h3>
             {% for image in image_list %}
                 <div class='image-preview'>

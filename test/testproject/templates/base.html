@@ -102,38 +102,32 @@
 
         <div id="content" class="content">
 
-            {% block breadcrumb %}
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                      <!-- {% if request.path != '/' %}
+                {% block breadcrumb %}
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
                           <li class="breadcrumb-item"><a href="/">{% trans "Home" %}</a></li>
-                      {% endif %}
-                      {% if request.path == '/' %}
-                          <li class="breadcrumb-item"><a href="/">{% trans "Home" %}</a></li>
-                      {% endif %} -->
-                      <li class="breadcrumb-item"><a href="/">{% trans "Home" %}</a></li>
-                      {% if request.path != imagestore_index_url %}
-                          <li class="breadcrumb-item"><a href="{{ imagestore_index_url }}">{% trans "Gallery" %}</a></li>
-                      {% endif %}
-                      {% block imagestore-breadcrumb %}
-                      {% endblock %}
-                    </ol>
-                </nav>
-            {% endblock %}
+                          {% if request.path != imagestore_index_url %}
+                              <li class="breadcrumb-item"><a href="{{ imagestore_index_url }}">{% trans "Gallery" %}</a></li>
+                          {% endif %}
+                          {% block imagestore-breadcrumb %}
+                          {% endblock %}
+                        </ol>
+                    </nav>
+                {% endblock %}
 
-            {% if messages %}
-                <div>
-                  <strong>Messages:</strong>
-                  <ul>
-                    {% for message in messages %}
-                    <li>{{message}}</li>
-                    {% endfor %}
-                  </ul>
-                </div>
-            {% endif %}
+                {% if messages %}
+                    <div>
+                      <strong>Messages:</strong>
+                      <ul>
+                        {% for message in messages %}
+                        <li>{{message}}</li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                {% endif %}
 
             {% block content %}
-            <!-- <h1>Example project</h1> -->
+                <!-- <h1>Example project</h1> -->
             {% endblock %}
 
             {% block content-related %}
@@ -150,9 +144,11 @@
             {% endblock %}
 
           </div>
+
           <!-- Dark Overlay element -->
-          <div class="overlay"></div>
-      </div>
+              <div class="overlay"></div>
+
+        </div>
 
 
       {% if form %}<body onbeforeunload="return confirmLeavePage()">{% endif %}
@@ -203,7 +199,7 @@
               $('a[aria-expanded=true]').attr('aria-expanded', 'false');
           });
       });
-      
+
       $(document).ready(function() {
         var imageId = 0;
         $('.thumb').magnificPopup({
