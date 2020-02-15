@@ -282,10 +282,8 @@ img.current {
     float: left;
     width: 150px;
     /* padding: 5px; */
-    /* padding-left: 2px;
-    padding-right: 2px; */
-    padding-top: 3px;
-    height: 150px;
+    padding-left: 15px;
+    /* height: 150px; */
     /* display: table-cell; */
     overflow: hidden;
 }
