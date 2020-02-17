@@ -81,7 +81,6 @@
 
                     <ul class="list-unstyled components" id="accordion">
                         {% get_root_albums as albumroot %}
-                        <!-- <p>Dummy Heading</p> -->
                         {% for album in albumroot %}
                         <li>
                             <a href="{{ album.get_absolute_url }}">{{ album.name }}</a>
@@ -127,7 +126,6 @@
                 {% endif %}
 
             {% block content %}
-                <!-- <h1>Example project</h1> -->
             {% endblock %}
 
             {% block content-related %}
