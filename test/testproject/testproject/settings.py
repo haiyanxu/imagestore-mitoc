@@ -47,12 +47,18 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django_markdown2',
     'django_cleanup.apps.CleanupConfig',
+    'captcha',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+#DJANGO-RECAPTCHA CONFIGURATION
+RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY')
+NOCAPTCHA = True
 
 #IMAGESTORE CONFIGURATION:
 IMAGESTORE_TEMPLATE = 'base.html'
@@ -68,8 +74,9 @@ ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS=7
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
+ACCOUNT_SIGNUP_FORM_CLASS = 'testproject.forms.AllauthSignupForm'
+ACCOUNT_USERNAME_REQUIRED = False
 
 MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',

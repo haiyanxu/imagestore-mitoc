@@ -21,6 +21,7 @@ django-markdown2 = "*"
 django-allauth = "*"
 django-cleanup = "*"
 django = "<=2.2.8"
+django-recaptcha = "*"
 
 [requires]
 python_version = "3.8"
