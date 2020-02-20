@@ -37,6 +37,11 @@ class AlbumForm(forms.ModelForm):
     class Meta:
         model = Album
         exclude = ('user', 'created', 'updated')
+        labels = {
+            'tripreport': _('Trip Report --- *Note: Markdown formatting is supported for this field*'),
+            'head': _('Cover Photo'),
+            'brief': _('Brief Description'),
+        }
 
     def __init__(self, *args, **kwargs):
         super(AlbumForm, self).__init__(*args, **kwargs)
