@@ -283,7 +283,7 @@ img.current {
     width: 150px;
     /* padding: 5px; */
     padding-left: 15px;
-    /* height: 150px; */
+    height: 150px;
     /* display: table-cell; */
     overflow: hidden;
 }
