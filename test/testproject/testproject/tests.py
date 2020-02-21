@@ -95,6 +95,31 @@ class PageTests(TestCase):
         self.assertContains(response, 'testuser1Album1')
         self._navbar_options_user(response)
 
+    def test_icons_page(self):
+        #test base URL
+        response = self.client.get('/icons/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.resolver_match.func.__name__, 'icons')
+        self.assertTemplateUsed(response, 'base.html')
+        self.assertTemplateUsed(response, 'mitocgallery/icons.html')
+        self.assertContains(response, 'Camera')
+        self.assertContains(response, 'Cross')
+        self._navbar_options_guest(response)
+        #test reverse URL
+        response = self.client.get(reverse('icon-page'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.resolver_match.func.__name__, 'icons')
+        self.assertTemplateUsed(response, 'base.html')
+        self.assertTemplateUsed(response, 'mitocgallery/icons.html')
+        #test user logged in
+        self.client.login(username='testuser1', password='MitocGallery')
+        response = self.client.get(reverse('icon-page'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.resolver_match.func.__name__, 'icons')
+        self.assertTemplateUsed(response, 'base.html')
+        self.assertTemplateUsed(response, 'mitocgallery/icons.html')
+        self._navbar_options_user(response)
+
     def test_create_album(self):
         #test base URL
         response = self.client.get('/album/add/', follow = True)

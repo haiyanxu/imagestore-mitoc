@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Website Icons{% endblock title %}
+
+{% block imagestore-breadcrumb %}
+    <li class="breadcrumb-item active" aria-current="page">Icons</li>
+{% endblock %}
+
+{% block content %}
+<h1> Website Icons </h1>
+
+<p><img src = "{% static 'icons/imgnotfound.png' %}"/> <a href="https://www.iconfinder.com/icons/2849787/camera_image_interface_media_multimedia_photo_photography_icon">Camera</a> by <a href="https://www.iconfinder.com/Fishmoby">Sergey Ershov</a> licensed under <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a> is used to represent images that cannot be loaded at this time.</p>
+
+<p><img src = "{% static 'icons/emptyalbum.png' %}"/> <a href="https://www.iconfinder.com/icons/2849810/cross_delite_error_interface_multimedia_icon">Cross</a> by <a href="https://www.iconfinder.com/Fishmoby">Sergey Ershov</a> licensed under <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a> is used to represent empty albums.</p>
+
+
+{% endblock %}

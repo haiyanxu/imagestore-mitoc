@@ -148,12 +148,16 @@
 
         </div>
 
-        <footer class="footer">
+        <div class="footer">
           <div class="container">
-              <span class="text-muted">Footer text.</span>
-            </ul>
+              <a class="text-muted" href="https://mitoc.mit.edu/">2020 MITOC</a>
+              <ul>
+                <li>
+                  <a class="text-muted" href="{% url 'icon-page' %}">Icons</a>
+                </li>
+              </ul>
           </div>
-        </footer>
+        </div>
 
 
       {% if form %}<body onbeforeunload="return confirmLeavePage()">{% endif %}
