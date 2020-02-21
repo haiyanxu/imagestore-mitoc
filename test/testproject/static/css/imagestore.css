@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Oxygen&display=swap');
 
-.wrapper {
+.container {
     display: flex;
     width: 100%;
     /* align-items: stretch; */
@@ -165,7 +165,7 @@ a[data-toggle="collapse"] {
 
 #content {
     width: 100%;
-    padding: 40px;
+    /* padding: 40px; */
     /* min-height: 100vh; */
     transition: all 0.3s;
     /* position: absolute;

@@ -17,19 +17,6 @@
     {% include "imagestore/image-scope.html" %}
 {% endblock %}
 
-{% block imagestore-info %}
-    {% if view_user and IMAGESTORE_SHOW_USER %}
-        {% with user=view_user %}
-            {% include "imagestore/user_info.html" %}
-        {% endwith %}
-    {% endif %}
-    {% if album and IMAGESTORE_SHOW_USER %}
-        {% with user=album.user %}
-            {% include "imagestore/user_info.html" %}
-        {% endwith %}
-    {% endif %}
-{% endblock %}
-
 {% block content %}
     <h3>
         {% include "imagestore/image-scope.html" %}
@@ -122,6 +109,19 @@
                 </div>
             {% endfor %}
         </div>
+    {% endif %}
+{% endblock %}
+
+{% block imagestore-info %}
+    {% if view_user and IMAGESTORE_SHOW_USER %}
+        {% with user=view_user %}
+            {% include "imagestore/user_info.html" %}
+        {% endwith %}
+    {% endif %}
+    {% if album and IMAGESTORE_SHOW_USER %}
+        {% with user=album.user %}
+            {% include "imagestore/user_info.html" %}
+        {% endwith %}
     {% endif %}
 {% endblock %}
 
