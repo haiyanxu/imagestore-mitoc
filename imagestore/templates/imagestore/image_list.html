@@ -100,7 +100,7 @@
                     </a>
                     <a href="{% include "imagestore/image-href.html" %}" title="{{ image.title }}">
                         {% if image.title %}
-                            <br><span class='image-title'>{{ image.title|truncatechars:20 }}</span>
+                            <br><span class='image-title'>{{ image.title|truncatechars:17 }}</span>
                         {% else %}
                             {% trans 'Info' %}
                         {% endif %}
