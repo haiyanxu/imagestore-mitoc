@@ -37,7 +37,7 @@
     color: #333333;
     transition: all 0.3s;
     overflow-y: scroll;
-    font-size: 18px;
+    font-size: 1rem;
     border-right: #e9ecef;
     border-right-style: solid;
     border-right-width: .1em;
@@ -210,7 +210,7 @@ a[data-toggle="collapse"] {
 }
 
 #controls {
-    font-size: 90%;
+    font-size: .825rem;
     padding-top: 10px;
 }
 
@@ -231,7 +231,7 @@ hr {
 .navigation {
     text-align: center;
     padding: 0 0 10px 0;
-    font-size: 110%;
+    font-size: 1.1rem;
 }
 
 .navigation .next-link {
@@ -276,7 +276,7 @@ img.current {
 .album-user {
     width: 100%;
     text-align: center;
-    font-size: 80%;
+    font-size: .8rem;
     color: #0092FF;
 }
 
@@ -315,14 +315,14 @@ img.current {
 }
 
 .image-preview .image-title {
-    font-size: 80%;
+    font-size: .8rem;
     padding-left: 2px;
     padding-right: 2px;
     line-height: 1;
 }
 
 .extra-fields {
-    font-size: 80%;
+    font-size: .8rem;
     margin: 10px 0;
 }
 
