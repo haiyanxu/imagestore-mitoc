@@ -36,7 +36,7 @@ ImageFormSet = modelformset_factory(Image, exclude=('user', 'order', 'album'), e
 class AlbumForm(forms.ModelForm):
     class Meta:
         model = Album
-        exclude = ('user', 'created', 'updated')
+        exclude = ('user', 'created', 'updated', 'order')
         labels = {
             'tripreport': _('Trip Report --- *Note: Markdown formatting is supported for this field*'),
             'head': _('Cover Photo'),
