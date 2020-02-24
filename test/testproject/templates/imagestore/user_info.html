@@ -1,0 +1,14 @@
+{% load i18n %}
+{% load thumbnail %}
+
+{# if we can't get profile then return user model itself #}
+{% with profile=user.get_profile|default_if_none:user %}
+    <div class="user-info">
+        <h4>{% trans "User" %}</h4>
+        <div class="user-name">
+            <a href="{% url 'imagestore:user' username=user.username %}">
+                {{ user.username }}
+            </a>
+        </div>
+     </div>
+{% endwith %}

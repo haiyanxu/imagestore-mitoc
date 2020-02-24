@@ -1,0 +1,11 @@
+{% load i18n %}
+
+{% if view_user %}
+    {% trans "User" %}: {{ view_user }}
+{% endif %}
+{% if album %}
+    {% trans "Album" %}: {{ album.name }}
+{% endif %}
+{% if tag %}
+    {% trans "Tag" %}: {{ tag }}
+{% endif %}
