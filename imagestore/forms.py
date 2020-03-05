@@ -20,7 +20,7 @@ class ImageForm(FutureModelForm):
     class Meta:
         model = Image
         # exclude = ('user', 'order')
-        exclude = ('user', 'order', 'album')
+        exclude = ('user', 'album')
 
     def __init__(self, user, *args, **kwargs):
         super(ImageForm, self).__init__(*args, **kwargs)
@@ -31,7 +31,7 @@ class ImageForm(FutureModelForm):
             self.fields['tags'].widget = TaggingSelect2(
                 url=reverse('imagestore:tag-autocomplete'))
 
-ImageFormSet = modelformset_factory(Image, exclude=('user', 'order', 'album'), extra = 8)
+ImageFormSet = modelformset_factory(Image, exclude=('user', 'album'), extra = 8)
 
 class AlbumForm(forms.ModelForm):
     class Meta:

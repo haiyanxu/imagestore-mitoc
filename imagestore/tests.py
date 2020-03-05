@@ -40,6 +40,7 @@ class ImagestoreTest(TestCase):
                 'form-0-image': self.image_file,
                 'form-0-title': "title",
                 'form-0-summary': "this is the summary",
+                'form-0-order': 0,
             },
             follow=True,
         )
@@ -115,6 +116,7 @@ class ImagestoreTest(TestCase):
                 'form-0-image': self.image_file,
                 'form-0-title': "title nonimg",
                 'form-0-summary': "summary nonimg",
+                'form-0-order': 0,
             },
             follow=True,
         )
@@ -139,6 +141,7 @@ class ImagestoreTest(TestCase):
                 'form-0-title': "title",
                 'form-0-summary': "this is the summary",
                 'form-0-tags': "one, two, three",
+                'form-0-order': 0,
             },
             follow=True,
         )
