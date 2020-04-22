@@ -23,7 +23,7 @@
     </h3>
     {% include "imagestore/pagination.html" %}
     {% if album.tripreport %}
-      <div class="image-description">
+      <div class="image-summary">
         {% load md2 %}{{ album.tripreport|markdown|linebreaks }}
       </div>
     {% endif %}

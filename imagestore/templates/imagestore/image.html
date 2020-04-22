@@ -40,13 +40,10 @@
         {% if album or tag or view_user %}
             <h4>{% include "imagestore/image-scope.html" %}</h4>
         {% endif %}
-        {% if image.summary %}<div class="image-description">
+        {% if image.summary %}<div class="image-summary">
             {{ image.summary }}
-        </div>
+          </div>
         {% endif %}
-        <div class="image-description">
-            {{ image.description }}
-        </div>
         <div id="image-view">
             <div class="navigation">
                 {% if previous %} <a class="previous-link" href="
