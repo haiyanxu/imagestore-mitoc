@@ -55,7 +55,7 @@ class AlbumListView(ListView):
         self.e_context = dict()
         if 'username' in self.kwargs:
             user = get_object_or_404(**{'klass': User, username_field: self.kwargs['username']})
-            albums = albums.filter(user=user)
+            albums = Album.objects.filter(user=user)
             self.e_context['view_user'] = user
         return albums
 
