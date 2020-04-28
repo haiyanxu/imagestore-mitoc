@@ -16,8 +16,8 @@ urlpatterns = [
 
     url(r'^tag/(?P<tag>[^/]+)/$', ImageListView.as_view(), name='tag'),
 
-    url(r'^user/(?P<username>\w+)/albums/', AlbumListView.as_view(), name='user'),
-    url(r'^user/(?P<username>\w+)/$', ImageListView.as_view(), name='user-images'),
+    url(r'^user/(?P<user_id>\w+)/albums/', AlbumListView.as_view(), name='user'),
+    url(r'^user/(?P<user_id>\w+)/$', ImageListView.as_view(), name='user-images'),
 
     url(r'^upload/album/(?P<album_id>\d+)/$', CreateImage.as_view(), name='upload-image-to-album'),
 

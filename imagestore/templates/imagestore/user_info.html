@@ -6,7 +6,7 @@
     <div class="user-info">
         <h4>{% trans "User" %}</h4>
         <div class="user-name">
-            <a href="{% url 'imagestore:user' username=user.username %}">
+            <a href="{% url 'imagestore:user' user_id=user.id %}">
                 {{ user.username }}
             </a>
         </div>

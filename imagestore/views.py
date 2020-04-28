@@ -53,8 +53,8 @@ class AlbumListView(ListView):
     def get_queryset(self):
         albums = Album.objects.filter(parent__isnull=True).select_related('head').order_by('order')
         self.e_context = dict()
-        if 'username' in self.kwargs:
-            user = get_object_or_404(**{'klass': User, username_field: self.kwargs['username']})
+        if 'user_id' in self.kwargs:
+            user = get_object_or_404(User, id=self.kwargs['user_id'])
             albums = Album.objects.filter(user=user)
             self.e_context['view_user'] = user
         return albums
@@ -74,8 +74,8 @@ def get_images_queryset(self):
             raise Http404(_('No Tag found matching "%s".') % self.kwargs['tag'])
         self.e_context['tag'] = tag_instance
         images = TaggedItem.objects.get_by_model(images, tag_instance)
-    if 'username' in self.kwargs:
-        user = get_object_or_404(**{'klass': User, username_field: self.kwargs['username']})
+    if 'user_id' in self.kwargs:
+        user = get_object_or_404(User, id=self.kwargs['user_id'])
         self.e_context['view_user'] = user
         images = images.filter(user=user)
     if 'album_id' in self.kwargs:

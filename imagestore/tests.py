@@ -62,7 +62,7 @@ class ImagestoreTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_user(self):
-        response = self.client.get(reverse('imagestore:user', kwargs={'username': 'zeus'}))
+        response = self.client.get(reverse('imagestore:user', kwargs={'user_id': self.user.id}))
         self.assertEqual(response.status_code, 200)
 
     def test_album_creation(self):
