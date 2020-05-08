@@ -71,6 +71,20 @@ class BaseAlbum(MPTTModel):
             self.head = self.images.first()
             if self.head:
                 self.save()
+            # if album does not contain any images, check for subalbums
+            else:
+                child_albums = self.subalbums.all()
+                #if album does not contain any subalbums, end
+                if not child_albums:
+                    return
+                #else loop through subalbums, see if any have cover photo
+                #if cover photo is present, set self.head and end
+                else:
+                    for child in child_albums:
+                        if child.get_head():
+                            self.head = child.get_head()
+                            self.save()
+                            break
         return self.head
 
     admin_thumbnail.short_description = _('Head')
