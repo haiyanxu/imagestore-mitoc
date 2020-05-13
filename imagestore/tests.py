@@ -69,6 +69,24 @@ class ImagestoreTest(TestCase):
         response = self._create_test_album()
         self.assertEqual(response.status_code, 200)
 
+    def test_add_subalbum_to_album(self):
+        self._create_test_album()
+        parent_album = Album.objects.get(pk=1)
+        response = self.client.get('/album/1/')
+        self.assertContains(response, 'Upload Sub-Album to Album')
+        response = self.client.get('/album/add/1/')
+        self.assertContains(response, 'Create album')
+        self.assertContains(response, '<option value="1" selected> test album</option>')
+        number_of_sub_albums = len(Album.objects.filter(parent=1))
+        #create subalbum
+        response = self.client.post(reverse('imagestore:add-subalbum-to-album', kwargs={'album_id': 1}), {'name':'2OPb13', 'parent': '1'}, follow=True,)
+        #test whether number of albums has increased by 1
+        new_number_of_sub_albums = len(Album.objects.filter(parent=1))
+        self.assertEqual(new_number_of_sub_albums, number_of_sub_albums+1)
+        #test whether new sub-album name is correct
+        response = self.client.get('/album/1/')
+        self.assertEqual(Album.objects.get(parent=1).name, '2OPb13')
+
     def test_album_edit(self):
         response = self._create_test_album()
         album_id = Album.objects.get(name='test album creation').id

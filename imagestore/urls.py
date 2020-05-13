@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^$', AlbumListView.as_view(), name='index'),
 
     url(r'^album/add/$', CreateAlbum.as_view(), name='create-album'),
+    url(r'^album/add/(?P<album_id>\d+)/$', CreateAlbum.as_view(), name='add-subalbum-to-album'),
     url(r'^album/(?P<album_id>\d+)/$', ImageListView.as_view(), name='album'),
     url(r'^album/(?P<pk>\d+)/edit/$', UpdateAlbum.as_view(), name='update-album'),
     url(r'^album/(?P<pk>\d+)/delete/$', DeleteAlbum.as_view(), name='delete-album'),

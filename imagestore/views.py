@@ -163,6 +163,12 @@ class CreateAlbum(CreateView):
     def dispatch(self, *args, **kwargs):
         return super(CreateAlbum, self).dispatch(*args, **kwargs)
 
+    def get_initial(self):
+        if 'album_id' in self.kwargs:
+            initial = super(CreateView, self).get_initial()
+            initial['parent'] = self.kwargs['album_id']
+            return initial
+
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
