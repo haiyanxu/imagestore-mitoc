@@ -214,16 +214,15 @@ class ImagestoreTest(TestCase):
         self.assertEqual(response.context['next'], im1)
         self.assertEqual(response.context['previous'], im2)
 
-    def test_album_order(self):
+    def test_album_order_created(self):
         self.album.delete()
-        a1 = Album.objects.create(name='b2', order=1, user=self.user)
-        a2 = Album.objects.create(name='a1', order=2, user=self.user)
+        a1 = Album.objects.create(name='b2', user=self.user)
+        a2 = Album.objects.create(name='a1', user=self.user)
         response = self.client.get(reverse('imagestore:index'))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context['object_list'][0].name, 'b2')
         self.assertEqual(response.context['object_list'][1].name, 'a1')
-        a1.order, a2.order = 2, 1
-        a1.save()
+        a2.created = '2018-12-31 19:00:00+00'
         a2.save()
         response = self.client.get(reverse('imagestore:index'))
         self.assertEqual(response.status_code, 200)
