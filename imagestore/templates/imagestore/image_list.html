@@ -36,7 +36,7 @@
         <div class='album-list'>
             {% for album in album_list %}
                 {% if album.get_head  or album.user == request.user %}
-                <div class='album'>
+                <div class='subalbum'>
                     <div class='album-head'>
                         <a href="{{ album.get_absolute_url }}">
                         {% if album.get_head %}
