@@ -6,7 +6,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
 
 setup(
     name='imagestore-mitoc',
-    version='4.0.0',
+    version='4.1.0',
     packages=find_packages(),
     install_requires=[
         'django>=1.11',
