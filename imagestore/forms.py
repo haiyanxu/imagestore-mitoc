@@ -38,7 +38,7 @@ class AlbumForm(forms.ModelForm):
         model = Album
         exclude = ('user', 'created', 'updated', 'order')
         labels = {
-            'tripreport': _('Trip Report --- Note: Markdown formatting is supported for this field'),
+            'tripreport': _('Trip Report'),
             'head': _('Cover Photo'),
             'brief': _('Brief Description'),
         }
