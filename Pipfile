@@ -20,7 +20,7 @@ django-crispy-forms = ">=1.7.2"
 django-markdown2 = "*"
 django-allauth = "*"
 django-cleanup = "*"
-django = "<=2.2.8"
+django = "<2.2.14"
 django-recaptcha = "*"
 
 [requires]
