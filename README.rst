@@ -5,7 +5,7 @@ Imagestore-MITOC: Fork of hovel/imagestore for use with the MITOC photo gallery
 ImageStore
 ==========
 
-An image gallery, created for easy integration for an exiting django project.
+An image gallery, created for easy integration for an existing django project.
 
 `Documentation available on ReadTheDocs <http://readthedocs.org/projects/imagestore/>`_
 
