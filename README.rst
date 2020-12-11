@@ -14,7 +14,7 @@ Gallery for site
 
 * Albums
 * Mass upload
-* Thumbnails in admin intereface
+* Thumbnails in admin interface
 * Ordering
 * Tagging support
 * Easy PrettyPhoto integration
